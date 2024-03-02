@@ -49,9 +49,9 @@
         }
 
         .image {
-            width: 15%;
+            width: 10%;
             aspect-ratio: 1/1;
-            margin: 0.2%;
+            margin: 0.3%;
             object-fit: cover;
             display: inline-block;
         }
@@ -236,6 +236,7 @@
             scoreText.style.marginRight = "5px";
             scoreDisplay.appendChild(scoreText);
             showScore = document.createElement("p");
+            showScore.style.display = "inline-block";
             scoreDisplay.appendChild(showScore);
             showScore.id = "score";
 
@@ -323,13 +324,13 @@
 
             // Randomly select an index within the range of files array
             var randomIndex = Math.floor(Math.random() * files.length);
-            
+
             // Create an image element
             var img = document.createElement("img");
             img.className = "image";
             img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
             img.src = URL.createObjectURL(files[randomIndex]);
-            
+
             // Append the image to the image grid
             imageGrid.appendChild(img);
 
