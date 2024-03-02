@@ -119,6 +119,135 @@ function runPhotoMatch() {
 var functionHandler = function (param) {
     return function () { check(param) };
 }
+class WordOnGrid {
+            constructor(word) {
+                this.word = word; // The word itself
+                this.characters = []; // Array to store characters with their positions
+                this.isHorizontal; // Boolean indicating the orientation of the word
+
+                // Calculate the positions of characters based on orientation
+                
+            }
+
+            getCoordinates(charX, charY) {
+                for (let i = 0; i < word.length; i++) {
+                    if (isHorizontal) {
+                        charX += i;
+                    } else {
+                        charY += i;
+                    }
+                    this.characters.push({ char: word[i], x: charX, y: charY });
+                }
+            }
+
+            // Method to get the character at a specific index
+            getCharacter(index) {
+                return this.characters[index];
+            }
+
+            // Method to get the length of the word
+            getLength() {
+                return this.word.length;
+            }
+        }
+        function runCrossWord() {
+            document.getElementById("answerBar").classList.add("hidden");
+
+            if (inGame == true) {
+                if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
+                    var currentGame = document.getElementById("game");
+                    currentGame.remove();
+                }
+            }
+            inGame = true;
+
+            var game = document.createElement("div");
+            game.id = "game";
+
+            // Create a grid container
+            var gridContainer = document.createElement("div");
+            gridContainer.classList.add("grid-container");
+
+            // Generate grid cells
+            
+            
+            //setSquareTypable(1, 1);
+            namesCopy = randomizeNames();
+            namesCopy = namesCopy.map(function(element) {
+                return element.toLowerCase();
+            });
+            board = Array.from({ length: 16 }, () => Array.from({ length: 16 }).fill(''));
+
+            names_placed = 0;
+            
+            namesCopy.forEach(function(name) {
+                // Generate a random starting position and orientation for the word
+                let startX = Math.floor(Math.random() * 16);
+                let startY = Math.floor(Math.random() * 16);
+                let isHorizontal = Math.random() < 0.5; // Randomly choose horizontal or vertical orientation
+
+                // Create a WordOnGrid object for the current name
+                let word = new WordOnGrid(name);
+
+                // Add the WordOnGrid object to the array
+                wordsOnGrid.push(word);
+            });
+            
+            
+
+
+            for (var i = 0; i < 16; i++) { // Adjust the number of rows as needed
+                for (var j = 0; j < 16; j++) { // Adjust the number of columns as needed
+                    var gridItem = document.createElement("input");
+                    gridItem.classList.add("grid-item");
+                    gridItem.setAttribute("type", "text"); // Set input type to text
+                    gridItem.setAttribute("maxlength", "0"); // Limit input to one character
+                    gridItem.value = board[i][j]; // Empty content initially
+                    gridItem.setAttribute("data-row", i); // Set row index as data attribute
+                    gridItem.setAttribute("data-col", j); // Set column index as data attribute
+                    gridContainer.appendChild(gridItem);
+                    
+                    
+                }
+            }
+
+            
+
+            // Append the grid container to the game
+            game.appendChild(gridContainer);
+
+            // Append the game to the document body
+            document.body.appendChild(game);
+
+            /*
+            for(let i = 0; i < names[0].length; i++){
+                var square = document.querySelector('.grid-item[data-row="' + i + '"][data-col="' + 0 + '"]');
+                setSquareTypable(i, 0)
+                square.value = names[0][i];
+                
+            }
+
+            */
+
+            
+
+        }
+
+
+        function randomizeNames() {
+            namesCopy = names;
+            for (let i = names.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [namesCopy[i], namesCopy[j]] = [namesCopy[j], namesCopy[i]];
+            }
+            return namesCopy;
+        }
+
+        function setSquareTypable(row, col) {
+            var square = document.querySelector('.grid-item[data-row="' + row + '"][data-col="' + col + '"]');
+            square.style.backgroundColor = "grey";
+            square.setAttribute("maxlength", "1");
+        }
 
 function runTypeName() {
     if (inGame == true) {
