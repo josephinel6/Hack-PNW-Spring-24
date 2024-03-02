@@ -1,16 +1,15 @@
-from flask import Flask, send_from_directory
+# imports
+from flask import Flask, render_template
+from flask_socketio import SocketIO
 
+# setups and global variables
 app = Flask(__name__)
+socketio = SocketIO(app)
 
-# Define the folder containing images
-IMAGE_FOLDER = 'images'
-
-# Route to serve images
-@app.route('/images/<path:filename>')
-def serve_image(filename):
-    return send_from_directory(IMAGE_FOLDER, filename)
+# app routes
 @app.route('/')
 def index():
     return render_template('index.html')
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app)
