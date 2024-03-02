@@ -9,6 +9,8 @@ IMAGE_FOLDER = 'images'
 @app.route('/images/<path:filename>')
 def serve_image(filename):
     return send_from_directory(IMAGE_FOLDER, filename)
-
+@app.route('/')
+def index():
+    return render_template('index.html')
 if __name__ == '__main__':
     app.run(debug=True)
