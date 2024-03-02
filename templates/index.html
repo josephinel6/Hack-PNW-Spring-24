@@ -178,6 +178,8 @@
             currentPerson = names[num];
         }
 
+        
+
         var functionHandler = function (param) {
             return function () { check(param) };
         }
@@ -211,20 +213,21 @@
 
             // Randomly select an index within the range of files array
             var randomIndex = Math.floor(Math.random() * files.length);
-
+            
             // Create an image element
             var img = document.createElement("img");
             img.className = "image";
             img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
             img.src = URL.createObjectURL(files[randomIndex]);
-
+            
             // Append the image to the image grid
             imageGrid.appendChild(img);
 
             // Set the name to display (name of the selected image without extension)
-            var imageName = files[randomIndex].name.split('.')[0];
+            imageName = files[randomIndex].name.split('.')[0];
             name.innerHTML = imageName;
         }
+
 
         function check(name) {
             console.log(name);
@@ -243,9 +246,9 @@
 
         function checkAnswer() {
             var userAnswer = document.getElementById("answer").value;
-            var correctAnswer = currentPerson; // Assuming currentPerson holds the correct answer
+            var correctAnswer = imageName.toLowerCase(); // Convert both answers to lowercase
 
-            if (userAnswer === correctAnswer) {
+            if (userAnswer.toLowerCase() == correctAnswer) { // Compare case-insensitively
                 document.getElementById("result").innerText = "Correct!";
             } else {
                 document.getElementById("result").innerText = "Incorrect. Try again!";
