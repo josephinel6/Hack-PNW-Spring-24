@@ -22,7 +22,7 @@
             color: var(--text);
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             margin-left: 20px;
-            margin-top: 20px;
+            margin-top: 5vh;
         }
 
         h1 {
@@ -77,13 +77,16 @@
             padding: 0;
             margin: 0;
             /* height: 20px; */
-            text-align: center;
+            margin-left: 20px;
+            height: 5vh;
+            font-size: 1.2em;
         }
 
         #nameDisplay {
             width: 100vw;
             min-height: 0;
             padding: 0;
+            font-size: 1.35em;
             margin: 0;
             /* height: 20px; */
             text-align: center;
@@ -98,8 +101,8 @@
         #upload-files {
             border-radius: 0.5em;
             background-color: var(--accent);
-            padding-left: 1em;
-            padding-right: 1em;
+            padding-left: 0.9em;
+            padding-right: 0.9em;
             padding-top: 0.5em;
             padding-bottom: 0.5em;
             color: white;
@@ -124,6 +127,16 @@
             /* font-weight: bold; */
             font-size: 0.95em;
             border: none;
+        }
+
+        #game {
+            margin-top: 2vh;
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: black;
+            margin-left: 20px;
+            margin-right: 20px;
         }
     </style>
 </head>
@@ -200,7 +213,7 @@
             if (inGame == true) {
                 if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
                     var currentGame = document.getElementById("game");
-                    document.body.remove(game);
+                    currentGame.remove();
                 }
             }
             inGame = true;
@@ -252,7 +265,7 @@
                 img.onclick = functionHandler(names[i])
             }
 
-            var num = Math.floor(Math.random() * (files.length - 1));
+            var num = Math.floor(Math.random() * (files.length));
             showName.innerHTML = names[num];
             currentPerson = names[num];
         }
@@ -312,7 +325,7 @@
             console.log(name);
             name = name.replace(".", " ");
             if (name == currentPerson) {
-                var num = Math.floor(Math.random() * (files.length - 1));
+                var num = Math.floor(Math.random() * (files.length));
                 showName.innerHTML = names[num];
                 currentPerson = names[num];
                 score++;
