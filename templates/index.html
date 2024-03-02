@@ -322,6 +322,9 @@
             imageGrid.id = "image-grid";
             game.appendChild(imageGrid);
 
+
+            game.appendChild(document.getElementById("answerBar"));
+
             // Randomly select an index within the range of files array
             var randomIndex = Math.floor(Math.random() * files.length);
 
@@ -350,15 +353,7 @@
                 console.log(score);
                 showScore.innerHTML = score;
                 for (var i = 0; i < files.length; i++) {
-                    document.getElementById(names[i].replace(" ", ))
-                    var img = document.createElement("img");
-                    img.className = "image";
-                    imageGrid.appendChild(img);
-                    img.setAttribute("src", URL.createObjectURL(files[i]))
-                    img.src = URL.createObjectURL(files[i]);
-                    var thisName = names[i];
-                    img.id = names[i].replace(" ", "-")
-                    img.onclick = functionHandler(names[i])
+                    document.getElementById(names[i].replace(" ",)).style.filter = "brightness(100%)";
                 }
 
             } else {
