@@ -78,13 +78,13 @@
 
             var imageGrid = document.createElement("div");
             imageGrid.id = "image-grid";
-            // document.body.appendChild(imageGrid);
+            document.body.appendChild(imageGrid);
 
             for (var i = 0; i < files.length; i++) {
                 console.log(files[i]);
                 var img = document.createElement("img");
                 img.className = "image";
-                document.body.appendChild(img);
+                imageGrid.appendChild(img);
                 img.setAttribute("src", URL.createObjectURL(files[i]))
                 img.src = URL.createObjectURL(files[i]);
                 names[i] = files[i].name.split('.')[0];
