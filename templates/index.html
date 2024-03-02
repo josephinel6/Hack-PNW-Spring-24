@@ -19,7 +19,6 @@
         .image {
             height: 500px;
             width: 500px;
-            /* background-color: orange; */
             display: block;
         }
     </style>
@@ -31,14 +30,21 @@
     <label for="folderUpload">Select a folder to upload:</label>
     <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
     <button type="submit" onclick="saveFiles()">Finish upload</button>
-    <img class="image">
+
+    <h1> Which would you like to play?</h1>
+    <button onclick="runPhotoMatch()"> Match photo to name </button>
+    <button oncick="runTypeName()"> Type name </button>
+
     <script>
         var files = [];
 
         function saveFiles() {
             files = document.getElementById("folderUpload").files;
-            console.log(files);
+        }
 
+        function runPhotoMatch() {
+            var imageGrid = document.createElement("div");
+            imageGrid.id = "image-grid";
             for (var i = 0; i < files.length; i++) {
                 console.log(files[i]);
                 var img = document.createElement("img");
