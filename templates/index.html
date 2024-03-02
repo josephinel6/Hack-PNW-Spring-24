@@ -11,6 +11,12 @@
             --accent: rgb(143, 95, 240);
         }
 
+        /* CSS styles */
+        .hidden {
+            display: none;
+            /* Hide the answer bar initially */
+        }
+
         body {
             background-color: #dde3f8;
             color: var(--text);
@@ -26,6 +32,13 @@
             /* font-size: large; */
             font-size: 1.7em;
             margin-bottom: 0.25em;
+        }
+
+        #loading {
+            align-self: center;
+            height: 4vw;
+            width: 4vw;
+            margin-left: 48vw;
         }
 
         label {
@@ -100,13 +113,16 @@
 </head>
 
 <body>
-    <h1>Welcome! Upload a folder of photos to get started playing!</h1>
-    <label for="folderUpload" style="font-size: 0.9em"><i>The file name of each photo in the folder should be the name
-            of the person that photo corresponds to.</i></label>
-    <br>
-    <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
-    <br>
-    <button type="submit" onclick="saveFiles()" id="upload-files">Upload!</button>
+    <div id="welcome">
+        <h1>Welcome! Upload a folder of photos to get started playing!</h1>
+        <label for="folderUpload" style="font-size: 0.9em"><i>The file name of each photo in the folder should be the
+                name
+                of the person that photo corresponds to.</i></label>
+        <br>
+        <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
+        <br>
+        <button type="submit" onclick="saveFiles()" id="upload-files">Upload!</button>
+    </div>
     <div id="options">
         <h1> Which would you like to play?</h1>
         <button onclick="runPhotoMatch()"> Match photo to name </button>
@@ -140,9 +156,21 @@
 
 
         function saveFiles() {
-            files = document.getElementById("folderUpload").files;
-            getNames();
-            document.getElementById("options").style.display = "block";
+            document.getElementById("welcome").style.display = "none";
+            var loading = document.createElement("img");
+            loading.src = "../loading.gif";
+            loading.id = "loading";
+            document.body.appendChild(loading);
+            sleep(500).then(() => {
+                loading.remove();
+                files = document.getElementById("folderUpload").files;
+                getNames();
+                document.getElementById("options").style.display = "block";
+            })
+        }
+
+        function sleep(time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
         }
 
         var inGame = false;
@@ -213,6 +241,8 @@
             currentPerson = names[num];
         }
 
+
+
         var functionHandler = function (param) {
             return function () { check(param) };
         }
@@ -257,9 +287,10 @@
             imageGrid.appendChild(img);
 
             // Set the name to display (name of the selected image without extension)
-            var imageName = files[randomIndex].name.split('.')[0];
+            imageName = files[randomIndex].name.split('.')[0];
             name.innerHTML = imageName;
         }
+
 
         function check(name) {
             console.log(name);
@@ -278,9 +309,9 @@
 
         function checkAnswer() {
             var userAnswer = document.getElementById("answer").value;
-            var correctAnswer = currentPerson; // Assuming currentPerson holds the correct answer
+            var correctAnswer = imageName.toLowerCase(); // Convert both answers to lowercase
 
-            if (userAnswer === correctAnswer) {
+            if (userAnswer.toLowerCase() == correctAnswer) { // Compare case-insensitively
                 document.getElementById("result").innerText = "Correct!";
             } else {
                 document.getElementById("result").innerText = "Incorrect. Try again!";
