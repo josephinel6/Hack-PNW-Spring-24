@@ -77,10 +77,12 @@
     <button onclick="runPhotoMatch()"> Match photo to name </button>
     <button onclick="runTypeName()"> Type name </button>
 
-    <label for="answer">Enter your answer:</label>
-    <input type="text" id="answer" name="answer">
-    <button onclick="checkAnswer()">Check Answer</button>
-    <p id="result"></p>
+    <div id="answerBar" class="hidden"> <!-- Initially hidden -->
+        <label for="answer">Enter your answer:</label>
+        <input type="text" id="answer" name="answer">
+        <button onclick="checkAnswer()">Check Answer</button>
+        <p id="result"></p>
+    </div>
 
 
 
@@ -182,6 +184,8 @@
                 }
             }
             inGame = true;
+
+            document.getElementById("answerBar").classList.remove("hidden");
 
             var game = document.createElement("div");
             game.id = "game";
