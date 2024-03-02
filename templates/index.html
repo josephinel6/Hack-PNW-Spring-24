@@ -17,9 +17,21 @@
         }
 
         .image {
-            height: 500px;
-            width: 500px;
+            width: 15%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            display: inline-block;
+        }
+
+        .image:hover {
+            cursor: pointer;
+        }
+
+        #image-grid {
             display: block;
+            width: 80vw;
+            align-items: center;
+            margin-left: 10vw;
         }
     </style>
 </head>
@@ -30,21 +42,44 @@
     <label for="folderUpload">Select a folder to upload:</label>
     <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
     <button type="submit" onclick="saveFiles()">Finish upload</button>
-
     <h1> Which would you like to play?</h1>
     <button onclick="runPhotoMatch()"> Match photo to name </button>
     <button oncick="runTypeName()"> Type name </button>
 
+
+    <!-- <div id="image-grid">
+        <img class="image" src="../Images test/image.jpg">
+        <img class="image" src="../Images test/image2.jpg">
+        <img class="image" src="../Images test/img3.jpg">
+        <img class="image" src="../Images test/download.jpg">
+        <img class="image" src="../Images test/image.jpg">
+        <img class="image" src="../Images test/image2.jpg">
+        <img class="image" src="../Images test/img3.jpg">
+        <img class="image" src="../Images test/download.jpg">
+    </div> -->
+
+
     <script>
         var files = [];
+        var names = [];
 
         function saveFiles() {
             files = document.getElementById("folderUpload").files;
         }
 
         function runPhotoMatch() {
+            var score = 0;
+
+            var scoreDisplay = document.createElement("p");
+            var name = document.createElement("p");
+
+            document.body.appendChild(scoreDisplay);
+            document.body.appendChild(name);
+
             var imageGrid = document.createElement("div");
             imageGrid.id = "image-grid";
+            // document.body.appendChild(imageGrid);
+
             for (var i = 0; i < files.length; i++) {
                 console.log(files[i]);
                 var img = document.createElement("img");
@@ -52,7 +87,16 @@
                 document.body.appendChild(img);
                 img.setAttribute("src", URL.createObjectURL(files[i]))
                 img.src = URL.createObjectURL(files[i]);
+                names[i] = files[i].name.split('.')[0];
             }
+
+            // while (true) {
+            //     name.innerHTML = names[Math.random() * (files.length - 1)];
+            // }
+        }
+
+        function getName() {
+
         }
     </script>
 </body>
