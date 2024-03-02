@@ -372,11 +372,20 @@
 
             if (userAnswer.toLowerCase() == correctAnswer) { // Compare case-insensitively
                 document.getElementById("result").innerText = "Correct!";
+                prev = randomIndex;
+                while (randomIndex == prev && files.length > 1){
+                    randomIndex = Math.floor(Math.random() * files.length);
+                }
+                img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
+                img.src = URL.createObjectURL(files[randomIndex]);
+                imageGrid.appendChild(img);
+                imageName = files[randomIndex].name.split('.')[0];
                 score++;
             } else {
                 document.getElementById("result").innerText = "Incorrect. Try again!";
                 score--;
             }
+            showScore.innerHTML = score;
         }
 
         function getNames() {
