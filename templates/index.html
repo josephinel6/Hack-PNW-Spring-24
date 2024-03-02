@@ -67,7 +67,13 @@
             files = document.getElementById("folderUpload").files;
         }
 
+        var inGame = false;
+
         function runPhotoMatch() {
+            if (inGame == true) {
+                alert("")
+            }
+            inGame = true;
             var score = 0;
 
             var scoreDisplay = document.createElement("p");
@@ -87,7 +93,6 @@
                 imageGrid.appendChild(img);
                 img.setAttribute("src", URL.createObjectURL(files[i]))
                 img.src = URL.createObjectURL(files[i]);
-                names[i] = files[i].name.split('.')[0];
             }
 
             // while (true) {
@@ -96,7 +101,9 @@
         }
 
         function getName() {
-
+            for (var i = 0; i < files.length; i++) {
+                names[i] = files[i].name.split('.')[0];
+            }
         }
     </script>
 </body>
