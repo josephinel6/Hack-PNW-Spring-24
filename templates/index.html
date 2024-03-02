@@ -35,6 +35,8 @@
         }
 
         #loading {
+            margin-top: 5vh;
+            display: none;
             align-self: center;
             height: 4vw;
             width: 4vw;
@@ -109,6 +111,20 @@
         #options {
             display: none;
         }
+
+        .button {
+            border-radius: 0.25em;
+            background-color: var(--accent);
+            padding-left: 0.8em;
+            padding-right: 0.8em;
+            margin-right: 0;
+            padding-top: 0.4em;
+            padding-bottom: 0.4em;
+            color: white;
+            /* font-weight: bold; */
+            font-size: 0.95em;
+            border: none;
+        }
     </style>
 </head>
 
@@ -125,8 +141,8 @@
     </div>
     <div id="options">
         <h1> Which would you like to play?</h1>
-        <button onclick="runPhotoMatch()"> Match photo to name </button>
-        <button onclick="runTypeName()"> Type name </button>
+        <button onclick="runPhotoMatch()" class="button"> Match photo to name </button>
+        <button onclick="runTypeName()" class="button" style="margin-left: 0;"> Type name </button>
     </div>
 
     <div id="answerBar" class="hidden"> <!-- Initially hidden -->
