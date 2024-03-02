@@ -1,12 +1,32 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script src="index.js"></script>
-    <link rel="spreadsheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folder Upload</title>
+    <style>
+        body {
+            background-color: #a17dfa;
+            color: rgb(193, 193, 255);
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: rgb(193, 193, 255);
+        }
+    </style>
 </head>
-
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+    </ul>
+<nav></nav>
 <body>
-
+    <h1>Folder Upload</h1>
+    
+    <form id="folderUploadForm" enctype="multipart/form-data">
+        <label for="folderUpload">Select a folder to upload:</label>
+        <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
+        <button type="submit">Finish upload</button>
+    </form>
 </body>
-
 </html>
