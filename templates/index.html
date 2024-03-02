@@ -79,6 +79,17 @@
             padding-bottom: 2vh;
         }
 
+        #image-holder {
+            display: flex;
+            width: 96%;
+            margin-top: 0;
+            padding-left: 15px;
+            margin-left: 0;
+            align-items: center;
+            margin-left: 0;
+            padding-bottom: 2vh;
+        }
+
         label,
         button {
             margin-left: 20px;
@@ -102,8 +113,9 @@
             margin-top: 2vh;
             font-size: 1.4em;
             margin: 0;
-            /* height: 20px; */
-            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         #folderUpload {
@@ -153,7 +165,6 @@
             margin-right: 20px;
         }
 
-
         #stats {
             padding-top: 2vh;
             text-align: center;
@@ -183,7 +194,7 @@
             padding-right: 0.5em;
             margin-right: 0;
             margin-left: 0;
-            padding-top: 0.3em;
+            padding-top: 0.35em;
             padding-bottom: 0.3em;
             color: white;
             /* font-weight: bold; */
@@ -195,7 +206,8 @@
             margin-top: 1vh;
             margin-left: 20px;
             height: 3vh;
-            padding: 0;
+            padding: 1px;
+            padding-left: 4px;
             margin-bottom: 3vh;
         }
 
@@ -299,6 +311,7 @@
                 if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
                     var currentGame = document.getElementById("game");
                     currentGame.remove();
+                    document.getElementById("done-holder").remove();
                     score = 0;
                 }
             }
@@ -342,6 +355,8 @@
             var done = document.createElement("button");
             doneHolder.appendChild(done);
             doneHolder.id = "done-holder";
+
+            done.marginLeft = "0";
             done.innerHTML = "End game";
             done.id = "end-game";
             done.className = "button";
@@ -384,6 +399,7 @@
                 if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
                     var currentGame = document.getElementById("game");
                     currentGame.remove();
+                    document.getElementById("done-holder").remove();
                     score = 0;
                 }
             }
@@ -408,6 +424,7 @@
             doneHolder.appendChild(done);
             doneHolder.id = "done-holder";
             done.innerHTML = "End game";
+            done.marginLeft = "0";
             done.id = "end-game";
             done.className = "button";
             done.onclick = function () {
@@ -417,8 +434,6 @@
             document.body.appendChild(game);
             document.body.appendChild(doneHolder);
 
-            document.body.appendChild(game);
-            document.body.appendChild(done);
             scoreDisplay = document.createElement("div");
             scoreDisplay.style.padding = 0;
             scoreDisplay.id = "scoreDisplay";
@@ -438,9 +453,9 @@
             game.appendChild(name);
 
             imageGrid = document.createElement("div");
-            imageGrid.id = "image-grid";
-            game.appendChild(imageGrid);
+            imageGrid.id = "image-holder";
 
+            game.appendChild(imageGrid);
 
             game.appendChild(document.getElementById("answerBar"));
 
@@ -454,8 +469,9 @@
             img.src = URL.createObjectURL(files[randomIndex]);
             img.style.height = "30vh";
             img.style.width = "30vh";
-            img.style.marginBottom = "3.5vh";
+            img.style.marginBottom = "2.5vh";
             img.style.objectFit = "cover";
+            img.style.float = "left";
 
             // Append the image to the image grid
             imageGrid.appendChild(img);
