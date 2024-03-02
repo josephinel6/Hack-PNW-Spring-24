@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,18 +11,50 @@
             color: rgb(44, 44, 252);
             font-family: Arial, sans-serif;
         }
+
         h1 {
             color: rgb(44, 44, 252);
         }
+
+        .image {
+            height: 500px;
+            width: 500px;
+            display: block;
+        }
     </style>
 </head>
+
 <body>
     <h1>Folder Upload</h1>
-    
-    <form id="folderUploadForm" enctype="multipart/form-data">
-        <label for="folderUpload">Select a folder to upload:</label>
-        <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
-        <button type="submit">Finish upload</button>
-    </form>
+
+    <label for="folderUpload">Select a folder to upload:</label>
+    <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
+    <button type="submit" onclick="saveFiles()">Finish upload</button>
+
+    <h1> Which would you like to play?</h1>
+    <button onclick="runPhotoMatch()"> Match photo to name </button>
+    <button oncick="runTypeName()"> Type name </button>
+
+    <script>
+        var files = [];
+
+        function saveFiles() {
+            files = document.getElementById("folderUpload").files;
+        }
+
+        function runPhotoMatch() {
+            var imageGrid = document.createElement("div");
+            imageGrid.id = "image-grid";
+            for (var i = 0; i < files.length; i++) {
+                console.log(files[i]);
+                var img = document.createElement("img");
+                img.className = "image";
+                document.body.appendChild(img);
+                img.setAttribute("src", URL.createObjectURL(files[i]))
+                img.src = URL.createObjectURL(files[i]);
+            }
+        }
+    </script>
 </body>
+
 </html>
