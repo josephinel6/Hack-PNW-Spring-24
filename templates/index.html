@@ -71,20 +71,28 @@
 
         function runPhotoMatch() {
             if (inGame == true) {
-                alert("")
+                if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
+                    var currentGame = document.getElementById("game");
+                    document.body.remove(game);
+                }
             }
             inGame = true;
+
+            var game = document.createElement("div");
+            game.id = "game";
             var score = 0;
 
             var scoreDisplay = document.createElement("p");
             var name = document.createElement("p");
 
-            document.body.appendChild(scoreDisplay);
-            document.body.appendChild(name);
+            document.body.appendChild(game);
+
+            game.appendChild(scoreDisplay);
+            game.appendChild(name);
 
             var imageGrid = document.createElement("div");
             imageGrid.id = "image-grid";
-            document.body.appendChild(imageGrid);
+            game.appendChild(imageGrid);
 
             for (var i = 0; i < files.length; i++) {
                 console.log(files[i]);
@@ -95,9 +103,7 @@
                 img.src = URL.createObjectURL(files[i]);
             }
 
-            // while (true) {
-            //     name.innerHTML = names[Math.random() * (files.length - 1)];
-            // }
+            name.innerHTML = names[Math.random() * (files.length - 1)];
         }
 
         function getName() {
