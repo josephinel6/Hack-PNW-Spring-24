@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Memorization</title>
+    <link rel="stylesheet" href="../index.css">
+    <script src="../src.js"></script>
+</head>
+
+<body>
+    <div id="welcome">
+        <h1>Welcome! Upload a folder of photos to get started memorizing!</h1>
+        <label for="folderUpload" style="font-size: 0.9em"><i>The file name of each photo in the folder should be the
+                name
+                of the person that photo corresponds to.</i></label>
+        <br>
+        <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
+        <br>
+        <button type="submit" onclick="saveFiles()" id="upload-files">Upload!</button>
+    </div>
+    <div id="options">
+        <button onclick="backToHome()" id="backtohome" class="button">
+            New dataset
+        </button>
+        <h1> Which would you like to play?</h1>
+        <button onclick="runPhotoMatch()" class="button"> Match photo to name </button>
+        <button onclick="runTypeName()" class="button" style="margin-left: 0;"> Type name </button>
+    </div>
+
+    <div id="answerBar" class="hidden">
+        <label for="answer">Who is this?</label>
+        <br>
+        <input type="text" id="answer" name="answer">
+        <button onclick="checkAnswer()" id="check-answer">Check</button>
+        <p id="result"></p>
+    </div>
+
+    <div id="stats">
+        <h2 style="margin-left: 0; margin-bottom: 1vh;"> Thanks for playing! </h2>
+        <h3 style="margin-left: 0; margin-top: 0; margin-bottom: 0;"> Your final score was: </h3>
+        <h1 id="final-score" style="margin-top: 2vh; margin-left: 0;"> </h1>
+    </div>
+
+</body>
+
+</html>
