@@ -294,12 +294,25 @@
 
             var game = document.createElement("div");
             game.id = "game";
-            var score = 0;
+            score = 0;
 
             var scoreDisplay = document.createElement("p");
             var name = document.createElement("p");
 
             document.body.appendChild(game);
+
+            scoreDisplay = document.createElement("div");
+            scoreDisplay.style.padding = 0;
+            scoreDisplay.id = "scoreDisplay";
+            scoreText = document.createElement("p");
+            scoreText.innerHTML = "Score: ";
+            scoreText.style.display = "inline-block";
+            game.appendChild(scoreDisplay);
+            scoreText.style.marginRight = "5px";
+            scoreDisplay.appendChild(scoreText);
+            showScore = document.createElement("p");
+            scoreDisplay.appendChild(showScore);
+            showScore.id = "score";
 
             game.appendChild(scoreDisplay);
             game.appendChild(name);
@@ -310,13 +323,13 @@
 
             // Randomly select an index within the range of files array
             var randomIndex = Math.floor(Math.random() * files.length);
-
+            
             // Create an image element
             var img = document.createElement("img");
             img.className = "image";
             img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
             img.src = URL.createObjectURL(files[randomIndex]);
-
+            
             // Append the image to the image grid
             imageGrid.appendChild(img);
 
@@ -324,7 +337,6 @@
             imageName = files[randomIndex].name.split('.')[0];
             name.innerHTML = imageName;
         }
-
 
         function check(name) {
             console.log(name);
@@ -338,6 +350,7 @@
                 showScore.innerHTML = score;
             } else {
                 alert("Please try again.");
+                score--;
             }
         }
 
@@ -347,8 +360,10 @@
 
             if (userAnswer.toLowerCase() == correctAnswer) { // Compare case-insensitively
                 document.getElementById("result").innerText = "Correct!";
+                score++;
             } else {
                 document.getElementById("result").innerText = "Incorrect. Try again!";
+                score--;
             }
         }
 
