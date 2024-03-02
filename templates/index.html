@@ -25,10 +25,6 @@
             margin-top: 5vh;
         }
 
-        button:hover {
-            cursor: pointer;
-        }
-
         h1 {
             color: var(--text);
             margin-left: 20px;
@@ -88,6 +84,7 @@
             margin-left: 20px;
             height: 5vh;
             font-size: 1.1em;
+            display: inline-block;
         }
 
         #nameDisplay {
@@ -199,9 +196,6 @@
         <button type="submit" onclick="saveFiles()" id="upload-files">Upload!</button>
     </div>
     <div id="options">
-        <button onclick="backToHome()" id="backtohome" class="button">
-            New dataset
-        </button>
         <h1> Which would you like to play?</h1>
         <button onclick="runPhotoMatch()" class="button"> Match photo to name </button>
         <button onclick="runTypeName()" class="button" style="margin-left: 0;"> Type name </button>
@@ -211,7 +205,7 @@
         <label for="answer" style="font-size: 1.1em;">Who is this?</label>
         <div style="height: 1vh"></div>
         <input type="text" id="answer" name="answer">
-        <button onclick="checkAnswer()" id="check-answer">Check</button>
+        <button onclick="checkAnswer()">Check Answer</button>
         <p id="result"></p>
     </div>
 
@@ -268,7 +262,6 @@
                 if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
                     var currentGame = document.getElementById("game");
                     currentGame.remove();
-                    score = 0;
                 }
             }
             inGame = true;
@@ -289,7 +282,6 @@
             showScore.style.display = "inline-block";
             scoreDisplay.appendChild(showScore);
             showScore.id = "score";
-            showScore.innerHTML = score;
 
             nameDisplay = document.createElement("div");
             nameDisplay.style.padding = 0;
@@ -338,7 +330,6 @@
                 if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
                     var currentGame = document.getElementById("game");
                     currentGame.remove();
-                    score = 0;
                 }
             }
             inGame = true;
@@ -351,23 +342,23 @@
 
             var scoreDisplay = document.createElement("p");
             var name = document.createElement("p");
-
+            game.appendChild(scoreDisplay);
             document.body.appendChild(game);
+
             scoreDisplay = document.createElement("div");
             scoreDisplay.style.padding = 0;
             scoreDisplay.id = "scoreDisplay";
             scoreText = document.createElement("p");
             scoreText.innerHTML = "Score: ";
+            scoreText.style.marginRight = "5px";
             scoreText.style.display = "inline-block";
+
             game.appendChild(scoreDisplay);
             scoreText.style.marginRight = "5px";
             scoreDisplay.appendChild(scoreText);
             showScore = document.createElement("p");
-            showScore.style.display = "inline-block";
             scoreDisplay.appendChild(showScore);
             showScore.id = "score";
-            showScore.innerHTML = score;
-
             game.appendChild(scoreDisplay);
             game.appendChild(name);
 
@@ -375,22 +366,15 @@
             imageGrid.id = "image-grid";
             game.appendChild(imageGrid);
 
-
-            game.appendChild(document.getElementById("answerBar"));
-
             // Randomly select an index within the range of files array
             randomIndex = Math.floor(Math.random() * files.length);
-
+            
             // Create an image element
             img = document.createElement("img");
             img.className = "image";
             img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
             img.src = URL.createObjectURL(files[randomIndex]);
-            img.style.height = "30vh";
-            img.style.width = "30vh";
-            img.style.marginBottom = "3.5vh";
-            img.style.objectFit = "cover";
-
+            
             // Append the image to the image grid
             imageGrid.appendChild(img);
 
@@ -410,7 +394,15 @@
                 console.log(score);
                 showScore.innerHTML = score;
                 for (var i = 0; i < files.length; i++) {
-                    document.getElementById(names[i].replace(" ",)).style.filter = "brightness(100%)";
+                    document.getElementById(names[i].replace(" ", ))
+                    var img = document.createElement("img");
+                    img.className = "image";
+                    imageGrid.appendChild(img);
+                    img.setAttribute("src", URL.createObjectURL(files[i]))
+                    img.src = URL.createObjectURL(files[i]);
+                    var thisName = names[i];
+                    img.id = names[i].replace(" ", "-")
+                    img.onclick = functionHandler(names[i])
                 }
 
             } else {
@@ -421,30 +413,21 @@
         function checkAnswer() {
             var userAnswer = document.getElementById("answer").value;
             var correctAnswer = imageName.toLowerCase(); // Convert both answers to lowercase
-            var result = document.getElementById("result");
-            result.style.display = "inline-block";
 
             if (userAnswer.toLowerCase() == correctAnswer) { // Compare case-insensitively
-                result.innerText = "✓";
-                result.style.color = "green";
-                sleep(500).then(() => {
-                    prev = randomIndex;
-                    while (randomIndex == prev && files.length > 1) {
-                        randomIndex = Math.floor(Math.random() * files.length);
-                    }
-                    img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
-                    img.src = URL.createObjectURL(files[randomIndex]);
-                    imageGrid.appendChild(img);
-                    imageName = files[randomIndex].name.split('.')[0];
-                    score++;
-                    showScore.innerHTML = score;
-                    result.style.display = "none";
-                })
+                document.getElementById("result").innerText = "Correct!";
+                prev = randomIndex;
+                while (randomIndex == prev && files.length > 1){
+                    randomIndex = Math.floor(Math.random() * files.length);
+                }
+                img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
+                img.src = URL.createObjectURL(files[randomIndex]);
+                imageGrid.appendChild(img);
+                imageName = files[randomIndex].name.split('.')[0];
+                score++;
             } else {
-                document.getElementById("result").innerText = "❌";
-                sleep(1000).then(() => {
-                    result.style.display = "none";
-                })
+                document.getElementById("result").innerText = "Incorrect. Try again!";
+                score--;
             }
             showScore.innerHTML = score;
         }
@@ -453,10 +436,6 @@
             for (var i = 0; i < files.length; i++) {
                 names[i] = files[i].name.split('.')[0];
             }
-        }
-
-        function backToHome() {
-            location.reload();
         }
     </script>
 </body>
