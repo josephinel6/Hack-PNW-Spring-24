@@ -77,6 +77,12 @@
     <button onclick="runPhotoMatch()"> Match photo to name </button>
     <button onclick="runTypeName()"> Type name </button>
 
+    <label for="answer">Enter your answer:</label>
+    <input type="text" id="answer" name="answer">
+    <button onclick="checkAnswer()">Check Answer</button>
+    <p id="result"></p>
+
+
 
     <!-- <div id="image-grid">
         <img class="image" src="../Images test/image.jpg">
@@ -219,6 +225,17 @@
                 showScore.innerHTML = score;
             } else {
                 alert("Please try again.");
+            }
+        }
+
+        function checkAnswer() {
+            var userAnswer = document.getElementById("answer").value;
+            var correctAnswer = currentPerson; // Assuming currentPerson holds the correct answer
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById("result").innerText = "Correct!";
+            } else {
+                document.getElementById("result").innerText = "Incorrect. Try again!";
             }
         }
 
