@@ -25,6 +25,10 @@
             margin-top: 5vh;
         }
 
+        button:hover {
+            cursor: pointer;
+        }
+
         h1 {
             color: var(--text);
             margin-left: 20px;
@@ -143,6 +147,43 @@
             margin-left: 20px;
             margin-right: 20px;
         }
+
+        #result {
+            display: none;
+            height: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #check-answer {
+            border-radius: 0.25em;
+            background-color: var(--accent);
+            padding-left: 0.5em;
+            padding-right: 0.5em;
+            margin-right: 0;
+            margin-left: 0;
+            padding-top: 0.3em;
+            padding-bottom: 0.3em;
+            color: white;
+            /* font-weight: bold; */
+            font-size: 0.88em;
+            border: none;
+        }
+
+        #answer {
+            margin-top: 1vh;
+            margin-left: 20px;
+            height: 3vh;
+            padding: 0;
+            margin-bottom: 3vh;
+        }
+
+        #backtohome {
+            display: inline-block;
+            float: right;
+            margin-right: 25px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
@@ -158,15 +199,19 @@
         <button type="submit" onclick="saveFiles()" id="upload-files">Upload!</button>
     </div>
     <div id="options">
+        <button onclick="backToHome()" id="backtohome" class="button">
+            New dataset
+        </button>
         <h1> Which would you like to play?</h1>
         <button onclick="runPhotoMatch()" class="button"> Match photo to name </button>
         <button onclick="runTypeName()" class="button" style="margin-left: 0;"> Type name </button>
     </div>
 
     <div id="answerBar" class="hidden"> <!-- Initially hidden -->
-        <label for="answer">Enter your answer:</label>
+        <label for="answer">Who is this?</label>
+        <br>
         <input type="text" id="answer" name="answer">
-        <button onclick="checkAnswer()">Check Answer</button>
+        <button onclick="checkAnswer()" id="check-answer">Check</button>
         <p id="result"></p>
     </div>
 
@@ -190,6 +235,9 @@
 
 
         function saveFiles() {
+            if (document.getElementById("folderUpload").files.length == 0) {
+                alert("Please upload at least one file.");
+            }
             document.getElementById("welcome").style.display = "none";
             var loading = document.createElement("img");
             loading.src = "../loading.gif";
@@ -219,6 +267,7 @@
                 if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
                     var currentGame = document.getElementById("game");
                     currentGame.remove();
+                    score = 0;
                 }
             }
             inGame = true;
@@ -239,6 +288,7 @@
             showScore.style.display = "inline-block";
             scoreDisplay.appendChild(showScore);
             showScore.id = "score";
+            showScore.innerHTML = score;
 
             nameDisplay = document.createElement("div");
             nameDisplay.style.padding = 0;
@@ -287,6 +337,7 @@
                 if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
                     var currentGame = document.getElementById("game");
                     currentGame.remove();
+                    score = 0;
                 }
             }
             inGame = true;
@@ -301,7 +352,6 @@
             var name = document.createElement("p");
 
             document.body.appendChild(game);
-
             scoreDisplay = document.createElement("div");
             scoreDisplay.style.padding = 0;
             scoreDisplay.id = "scoreDisplay";
@@ -312,8 +362,10 @@
             scoreText.style.marginRight = "5px";
             scoreDisplay.appendChild(scoreText);
             showScore = document.createElement("p");
+            showScore.style.display = "inline-block";
             scoreDisplay.appendChild(showScore);
             showScore.id = "score";
+            showScore.innerHTML = score;
 
             game.appendChild(scoreDisplay);
             game.appendChild(name);
@@ -327,13 +379,17 @@
 
             // Randomly select an index within the range of files array
             randomIndex = Math.floor(Math.random() * files.length);
-            
+
             // Create an image element
             img = document.createElement("img");
             img.className = "image";
             img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
             img.src = URL.createObjectURL(files[randomIndex]);
-            
+            img.style.height = "30vh";
+            img.style.width = "30vh";
+            img.style.marginBottom = "3.5vh";
+            img.style.objectFit = "cover";
+
             // Append the image to the image grid
             imageGrid.appendChild(img);
 
@@ -364,21 +420,30 @@
         function checkAnswer() {
             var userAnswer = document.getElementById("answer").value;
             var correctAnswer = imageName.toLowerCase(); // Convert both answers to lowercase
+            var result = document.getElementById("result");
+            result.style.display = "inline-block";
 
             if (userAnswer.toLowerCase() == correctAnswer) { // Compare case-insensitively
-                document.getElementById("result").innerText = "Correct!";
-                prev = randomIndex;
-                while (randomIndex == prev && files.length > 1){
-                    randomIndex = Math.floor(Math.random() * files.length);
-                }
-                img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
-                img.src = URL.createObjectURL(files[randomIndex]);
-                imageGrid.appendChild(img);
-                imageName = files[randomIndex].name.split('.')[0];
-                score++;
+                result.innerText = "✓";
+                result.style.color = "green";
+                sleep(500).then(() => {
+                    prev = randomIndex;
+                    while (randomIndex == prev && files.length > 1) {
+                        randomIndex = Math.floor(Math.random() * files.length);
+                    }
+                    img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
+                    img.src = URL.createObjectURL(files[randomIndex]);
+                    imageGrid.appendChild(img);
+                    imageName = files[randomIndex].name.split('.')[0];
+                    score++;
+                    showScore.innerHTML = score;
+                    result.style.display = "none";
+                })
             } else {
-                document.getElementById("result").innerText = "Incorrect. Try again!";
-                score--;
+                document.getElementById("result").innerText = "❌";
+                sleep(1000).then(() => {
+                    result.style.display = "none";
+                })
             }
             showScore.innerHTML = score;
         }
@@ -387,6 +452,10 @@
             for (var i = 0; i < files.length; i++) {
                 names[i] = files[i].name.split('.')[0];
             }
+        }
+
+        function backToHome() {
+            location.reload();
         }
     </script>
 </body>
