@@ -341,7 +341,7 @@
 
         function check(name) {
             console.log(name);
-            name = name.replace(".", " ");
+            name = name.replace("-", " ");
             if (name == currentPerson) {
                 var num = Math.floor(Math.random() * (files.length));
                 showName.innerHTML = names[num];
@@ -349,9 +349,20 @@
                 score++;
                 console.log(score);
                 showScore.innerHTML = score;
+                for (var i = 0; i < files.length; i++) {
+                    document.getElementById(names[i].replace(" ", ))
+                    var img = document.createElement("img");
+                    img.className = "image";
+                    imageGrid.appendChild(img);
+                    img.setAttribute("src", URL.createObjectURL(files[i]))
+                    img.src = URL.createObjectURL(files[i]);
+                    var thisName = names[i];
+                    img.id = names[i].replace(" ", "-")
+                    img.onclick = functionHandler(names[i])
+                }
+
             } else {
-                alert("Please try again.");
-                score--;
+                document.getElementById(name).style.filter = "brightness(80%)";
             }
         }
 
