@@ -162,8 +162,8 @@
             padding-right: 0.5em;
             margin-right: 0;
             margin-left: 0;
-            padding-top: 0.3em;
-            padding-bottom: 0.3em;
+            padding-top: 0.35em;
+            padding-bottom: 0.35em;
             color: white;
             /* font-weight: bold; */
             font-size: 0.88em;
@@ -171,10 +171,10 @@
         }
 
         #answer {
-            margin-top: 1vh;
             margin-left: 20px;
             height: 3vh;
-            padding: 0;
+            padding: 1px;
+            padding-left: 4px;
             margin-bottom: 3vh;
         }
 
@@ -208,8 +208,8 @@
     </div>
 
     <div id="answerBar" class="hidden"> <!-- Initially hidden -->
-        <label for="answer">Who is this?</label>
-        <br>
+        <label for="answer" style="font-size: 1.1em;">Who is this?</label>
+        <div style="height: 1vh"></div>
         <input type="text" id="answer" name="answer">
         <button onclick="checkAnswer()" id="check-answer">Check</button>
         <p id="result"></p>
@@ -237,18 +237,19 @@
         function saveFiles() {
             if (document.getElementById("folderUpload").files.length == 0) {
                 alert("Please upload at least one file.");
+            } else {
+                document.getElementById("welcome").style.display = "none";
+                var loading = document.createElement("img");
+                loading.src = "../loading.gif";
+                loading.id = "loading";
+                document.body.appendChild(loading);
+                sleep(500).then(() => {
+                    loading.remove();
+                    files = document.getElementById("folderUpload").files;
+                    getNames();
+                    document.getElementById("options").style.display = "block";
+                })
             }
-            document.getElementById("welcome").style.display = "none";
-            var loading = document.createElement("img");
-            loading.src = "../loading.gif";
-            loading.id = "loading";
-            document.body.appendChild(loading);
-            sleep(500).then(() => {
-                loading.remove();
-                files = document.getElementById("folderUpload").files;
-                getNames();
-                document.getElementById("options").style.display = "block";
-            })
         }
 
         function sleep(time) {
@@ -413,7 +414,7 @@
                 }
 
             } else {
-                document.getElementById(name).style.filter = "brightness(80%)";
+                document.getElementById(name).style.filter = "brightness(60%)";
             }
         }
 
