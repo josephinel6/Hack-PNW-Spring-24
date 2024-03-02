@@ -77,7 +77,15 @@
     <button type="submit" onclick="saveFiles()">Finish upload</button>
     <h1> Which would you like to play?</h1>
     <button onclick="runPhotoMatch()"> Match photo to name </button>
-    <button oncick="runTypeName()"> Type name </button>
+    <button onclick="runTypeName()"> Type name </button>
+
+    <div id="answerBar" class="hidden"> <!-- Initially hidden -->
+        <label for="answer">Enter your answer:</label>
+        <input type="text" id="answer" name="answer">
+        <button onclick="checkAnswer()">Check Answer</button>
+        <p id="result"></p>
+    </div>
+
 
 
     <!-- <div id="image-grid">
@@ -174,6 +182,50 @@
             return function () { check(param) };
         }
 
+        function runTypeName() {
+            if (inGame == true) {
+                if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
+                    var currentGame = document.getElementById("game");
+                    document.body.remove(game);
+                }
+            }
+            inGame = true;
+
+            document.getElementById("answerBar").classList.remove("hidden");
+
+            var game = document.createElement("div");
+            game.id = "game";
+            var score = 0;
+
+            var scoreDisplay = document.createElement("p");
+            var name = document.createElement("p");
+
+            document.body.appendChild(game);
+
+            game.appendChild(scoreDisplay);
+            game.appendChild(name);
+
+            var imageGrid = document.createElement("div");
+            imageGrid.id = "image-grid";
+            game.appendChild(imageGrid);
+
+            // Randomly select an index within the range of files array
+            var randomIndex = Math.floor(Math.random() * files.length);
+
+            // Create an image element
+            var img = document.createElement("img");
+            img.className = "image";
+            img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
+            img.src = URL.createObjectURL(files[randomIndex]);
+
+            // Append the image to the image grid
+            imageGrid.appendChild(img);
+
+            // Set the name to display (name of the selected image without extension)
+            var imageName = files[randomIndex].name.split('.')[0];
+            name.innerHTML = imageName;
+        }
+
         function check(name) {
             console.log(name);
             name = name.replace(".", " ");
@@ -186,6 +238,17 @@
                 showScore.innerHTML = score;
             } else {
                 alert("Please try again.");
+            }
+        }
+
+        function checkAnswer() {
+            var userAnswer = document.getElementById("answer").value;
+            var correctAnswer = currentPerson; // Assuming currentPerson holds the correct answer
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById("result").innerText = "Correct!";
+            } else {
+                document.getElementById("result").innerText = "Incorrect. Try again!";
             }
         }
 
