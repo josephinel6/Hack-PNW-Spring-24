@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Folder Upload</title>
+    <title>Name Memorization</title>
     <style>
         :root {
             --text: black;
@@ -52,6 +52,10 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
+        #end-game {
+            margin-top: 2vh;
+        }
+
         .image {
             width: 10%;
             aspect-ratio: 1/1;
@@ -65,13 +69,14 @@
         }
 
         #image-grid {
-            display: flexbox;
-            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            width: 96%;
             margin-top: 0;
             justify-content: center;
             align-items: center;
-            padding-left: 20px;
-            padding-right: 20px;
+            margin-left: 2%;
+            padding-bottom: 2vh;
         }
 
         label,
@@ -148,6 +153,22 @@
             margin-right: 20px;
         }
 
+
+        #stats {
+            padding-top: 2vh;
+            text-align: center;
+            width: 30vw;
+            min-height: 20vh;
+            margin-top: 2vh;
+            padding-bottom: 1vh;
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: black;
+            margin-left: 35vw;
+            display: none;
+        }
+
         #result {
             display: none;
             height: 0;
@@ -181,7 +202,7 @@
         #backtohome {
             display: inline-block;
             float: right;
-            margin-right: 25px;
+            margin-right: 20px;
             margin-top: 15px;
         }
     </style>
@@ -189,7 +210,7 @@
 
 <body>
     <div id="welcome">
-        <h1>Welcome! Upload a folder of photos to get started playing!</h1>
+        <h1>Welcome! Upload a folder of photos to get started memorizing!</h1>
         <label for="folderUpload" style="font-size: 0.9em"><i>The file name of each photo in the folder should be the
                 name
                 of the person that photo corresponds to.</i></label>
@@ -215,7 +236,16 @@
         <p id="result"></p>
     </div>
 
-
+    <div id="stats">
+        <h2 style="margin-left: 0; margin-bottom: 1vh;"> Thanks for playing! </h2>
+        <h3 style="margin-left: 0; margin-top: 0; margin-bottom: 0;"> Your final score was: </h3>
+        <h1 id="final-score" style="margin-top: 2vh; margin-left: 0;"> </h1>
+        <!-- <p> You got </p>
+        <p style="display: inline-block;" id="amt-correct"> </p>
+        <p style="display: inline-block;"> out of </p>
+        <p style="display: inline-block;" id="amt-total"> </p>
+        <p style="display: inline-block;" id="amt-correct"> correct! </p> -->
+    </div>
 
     <!-- <div id="image-grid">
         <img class="image" src="../Images test/image.jpg">
@@ -237,18 +267,19 @@
         function saveFiles() {
             if (document.getElementById("folderUpload").files.length == 0) {
                 alert("Please upload at least one file.");
+            } else {
+                document.getElementById("welcome").style.display = "none";
+                var loading = document.createElement("img");
+                loading.src = "../loading.gif";
+                loading.id = "loading";
+                document.body.appendChild(loading);
+                sleep(500).then(() => {
+                    loading.remove();
+                    files = document.getElementById("folderUpload").files;
+                    getNames();
+                    document.getElementById("options").style.display = "block";
+                })
             }
-            document.getElementById("welcome").style.display = "none";
-            var loading = document.createElement("img");
-            loading.src = "../loading.gif";
-            loading.id = "loading";
-            document.body.appendChild(loading);
-            sleep(500).then(() => {
-                loading.remove();
-                files = document.getElementById("folderUpload").files;
-                getNames();
-                document.getElementById("options").style.display = "block";
-            })
         }
 
         function sleep(time) {
@@ -259,6 +290,7 @@
         var found = false;
         var currentPerson;
         var score = 0;
+        var prevRand = null;
 
         var scoreDisplay, scoreText, showScore, nameDisplay, nameText, showName;
 
@@ -303,7 +335,22 @@
             nameDisplay.appendChild(showName);
             game.appendChild(nameDisplay);
 
+            var doneHolder = document.createElement("div");
+            doneHolder.style.width = "100vw";
+            doneHolder.style.display = "flex";
+            doneHolder.style.justifyContent = "center";
+            var done = document.createElement("button");
+            doneHolder.appendChild(done);
+            doneHolder.id = "done-holder";
+            done.innerHTML = "End game";
+            done.id = "end-game";
+            done.className = "button";
+            done.onclick = function () {
+                endGame();
+            }
+
             document.body.appendChild(game);
+            document.body.appendChild(doneHolder);
 
             var imageGrid = document.createElement("div");
             imageGrid.id = "image-grid";
@@ -324,8 +371,8 @@
             var num = Math.floor(Math.random() * (files.length));
             showName.innerHTML = names[num];
             currentPerson = names[num];
+            prevRand = num;
         }
-
 
 
         var functionHandler = function (param) {
@@ -352,6 +399,26 @@
             var name = document.createElement("p");
 
             document.body.appendChild(game);
+
+            var doneHolder = document.createElement("div");
+            doneHolder.style.width = "100vw";
+            doneHolder.style.display = "flex";
+            doneHolder.style.justifyContent = "center";
+            var done = document.createElement("button");
+            doneHolder.appendChild(done);
+            doneHolder.id = "done-holder";
+            done.innerHTML = "End game";
+            done.id = "end-game";
+            done.className = "button";
+            done.onclick = function () {
+                endGame();
+            }
+
+            document.body.appendChild(game);
+            document.body.appendChild(doneHolder);
+
+            document.body.appendChild(game);
+            document.body.appendChild(done);
             scoreDisplay = document.createElement("div");
             scoreDisplay.style.padding = 0;
             scoreDisplay.id = "scoreDisplay";
@@ -395,14 +462,19 @@
 
             // Set the name to display (name of the selected image without extension)
             imageName = files[randomIndex].name.split('.')[0];
+            prevRand = randomIndex;
             //name.innerHTML = imageName;
         }
 
         function check(name) {
             console.log(name);
             name = name.replace("-", " ");
-            if (name == currentPerson) {
+            if (name.toLowerCase() == currentPerson.toLowerCase()) {
                 var num = Math.floor(Math.random() * (files.length));
+                while (prevRand == num) {
+                    num = Math.floor(Math.random() * (files.length));
+                }
+                prevRand = num;
                 showName.innerHTML = names[num];
                 currentPerson = names[num];
                 score++;
@@ -413,7 +485,7 @@
                 }
 
             } else {
-                document.getElementById(name).style.filter = "brightness(80%)";
+                document.getElementById(name).style.filter = "brightness(50%)";
             }
         }
 
@@ -456,6 +528,38 @@
 
         function backToHome() {
             location.reload();
+        }
+
+        function endGame() {
+            game.remove();
+            inGame = false;
+
+            // var stats = document.createElement("div");
+            // stats.id = "stats";
+            // document.body.appendChild(stats);
+            document.getElementById("options").style.display = "none";
+            document.getElementById("stats").style.display = "block";
+
+            document.getElementById("done-holder").remove();
+
+            document.getElementById("final-score").innerHTML = score;
+
+
+            var holder = document.createElement("div");
+            holder.style.width = "100vw";
+            holder.style.display = "flex";
+            holder.style.justifyContent = "center";
+            var playAgain = document.createElement("button");
+            document.body.appendChild(holder);
+            playAgain.id = "end-game";
+            playAgain.className = "button";
+            playAgain.style.marginLeft = "0";
+            playAgain.innerHTML = "Memorize another set of names"
+            playAgain.onclick = function () {
+                location.reload();
+            }
+
+            holder.appendChild(playAgain);
         }
     </script>
 </body>
