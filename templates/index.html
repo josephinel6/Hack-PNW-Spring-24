@@ -35,9 +35,28 @@
             align-items: center;
             margin-left: 10vw;
         }
+
         label,
         button {
             margin-left: 20px;
+        }
+
+        #scoreDisplay {
+            width: 100vw;
+            min-height: 0;
+            padding: 0;
+            margin: 0;
+            /* height: 20px; */
+            text-align: center;
+        }
+
+        #nameDisplay {
+            width: 100vw;
+            min-height: 0;
+            padding: 0;
+            margin: 0;
+            /* height: 20px; */
+            text-align: center;
         }
     </style>
 </head>
@@ -69,11 +88,17 @@
         var files = [];
         var names = [];
 
+
         function saveFiles() {
             files = document.getElementById("folderUpload").files;
+            getNames();
         }
 
         var inGame = false;
+        var found = false;
+        var currentPerson;
+
+        var score, scoreDisplay, scoreText, showScore, nameDisplay, nameText, showName;
 
         function runPhotoMatch() {
             if (inGame == true) {
@@ -88,13 +113,33 @@
             game.id = "game";
             var score = 0;
 
-            var scoreDisplay = document.createElement("p");
-            var name = document.createElement("p");
+            scoreDisplay = document.createElement("div");
+            scoreDisplay.style.padding = 0;
+            scoreDisplay.id = "scoreDisplay";
+            scoreText = document.createElement("p");
+            scoreText.innerHTML = "Score: ";
+            scoreText.style.display = "inline-block";
+            game.appendChild(scoreDisplay);
+            scoreText.style.marginRight = "5px";
+            scoreDisplay.appendChild(scoreText);
+            showScore = document.createElement("p");
+            scoreDisplay.appendChild(showScore);
+            showScore.id = "score";
+
+            nameDisplay = document.createElement("div");
+            nameDisplay.style.padding = 0;
+            nameDisplay.id = "nameDisplay";
+            nameText = document.createElement("p");
+            nameText.innerHTML = "Find";
+            nameText.style.marginRight = "5px";
+            nameText.style.display = "inline-block";
+            showName = document.createElement("p");
+            showName.style.display = "inline-block";
+            nameDisplay.appendChild(nameText);
+            nameDisplay.appendChild(showName);
+            game.appendChild(nameDisplay);
 
             document.body.appendChild(game);
-
-            game.appendChild(scoreDisplay);
-            game.appendChild(name);
 
             var imageGrid = document.createElement("div");
             imageGrid.id = "image-grid";
@@ -107,12 +152,29 @@
                 imageGrid.appendChild(img);
                 img.setAttribute("src", URL.createObjectURL(files[i]))
                 img.src = URL.createObjectURL(files[i]);
+                img.onclick = function () {
+                    check(names[i]);
+                }
             }
 
-            name.innerHTML = names[Math.random() * (files.length - 1)];
+            var num = Math.floor(Math.random() * (files.length - 1));
+            showName.innerHTML = names[num];
+            currentPerson = names[num];
         }
 
-        function getName() {
+        function check(name) {
+            if (name == currentPerson) {
+                var num = Math.floor(Math.random() * (files.length - 1));
+                name.innerHTML = names[num];
+                currentPerson = names[num];
+                score++;
+                showScore.innerHTML = score;
+            } else {
+                alert("Please try again.");
+            }
+        }
+
+        function getNames() {
             for (var i = 0; i < files.length; i++) {
                 names[i] = files[i].name.split('.')[0];
             }
