@@ -209,3 +209,19 @@ button {
     margin-right: 20px;
     margin-top: 15px;
 }
+
+.grid-container {
+            display: grid;
+            grid-template-columns: repeat(16, 30px); /* Adjust the number of columns and width as needed */
+            grid-gap: 1px 6px; /* Adjust the gap between grid cells as needed */
+            justify-content: left;
+        }
+
+.grid-item {
+    background-color: #FFFFFF; /* Default background color for grid cells */
+    border: 1px solid #999; /* Border color */
+    text-align: center;
+    line-height: 30px; /* Adjust line height to vertically center text */
+    width: 30px; /* Fixed width for each grid cell */
+    height: 30px; /* Fixed height for each grid cell */
+        }
