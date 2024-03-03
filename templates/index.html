@@ -9,6 +9,7 @@
     <script src="{{ url_for('static', filename='index.js') }}"></script>
     <link rel="stylesheet" href="../static/index.css">
     <script src="../static/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -16,7 +17,13 @@
         <h1 id="header">Welcome to Name It! Upload a folder of photos to get started memorizing!</h1>
         <label for="folderUpload" style="font-size: 0.9em"><i>The file name of each photo in the folder should be the
                 name
-                of the person that photo corresponds to.</i></label>
+                of the person that photo corresponds to.</i></label> 
+                <i class="fas fa-question-circle" style="font-size: 0.8em;" id="info">
+                <p id="info-text">
+                    E.g., the photo for Emily should be "Emily.png" or "Emily.jpg"
+                </p></i>
+                
+                <!-- <label style="display:inline-block; height: 0; padding-top: 0.1vh; margin-left: 0.5vw; position: absolute;"> ? </label> -->
         <br>
         <input type="file" id="folderUpload" name="folderUpload" webkitdirectory directory multiple>
         <br>
