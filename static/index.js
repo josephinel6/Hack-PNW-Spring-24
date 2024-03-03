@@ -123,16 +123,16 @@ function runCrossWord() {
     inGame = true;
 
     
-    const size = 30;
+    const size = 20;
     let board = new Array(size).fill().map(() => new Array(size).fill(' '));
-    let names = ['alice', 'bob', 'charlie', 'david', 'emma', 'frank', 'grace', 'henry', 'isabella', 'jack', 'lily', 'michael', 'nora', 'oliver', 'penny'];
 
+    new_names = shuffle(names);
+    new_names = new_names.map(name => name.toLowerCase());
 
-    shuffle(names);
 
     let charWordMap = {};
 
-    for (let word of names) {
+    for (let word of new_names) {
         for (let char of word) {
             if (char in charWordMap) {
                 charWordMap[char].push(word);
@@ -143,14 +143,14 @@ function runCrossWord() {
     }
 
     let used = {};
-    for (let name of names) {
+    for (let name of new_names) {
         used[name] = false;
     }
 
     
 
-    board = place(board, names[0], 10, 10, 'vertical');
-    used[names[0]] = true;
+    board = place(board, new_names[0], 6, 6, 'vertical');
+    used[new_names[0]] = true;
 
     let index = 0;
 
@@ -195,8 +195,8 @@ function runCrossWord() {
     var gridContainer = document.createElement("div");
     gridContainer.classList.add("grid-container");
     
-    for (var i = 0; i < 30; i++) {
-        for (var j = 0; j < 30; j++) {
+    for (var i = 0; i < size; i++) {
+        for (var j = 0; j < size; j++) {
             var gridItem = document.createElement("input");
             gridItem.classList.add("grid-item");
             gridItem.setAttribute("type", "text");
@@ -214,11 +214,13 @@ function runCrossWord() {
     
 }
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+function shuffle(array_original) {
+    let array = JSON.parse(JSON.stringify(array_original));
+    for (let i = array_original.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
 }
 
 function place(board, name, x, y, direction) {
