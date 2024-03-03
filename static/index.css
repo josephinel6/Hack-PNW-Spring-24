@@ -1,6 +1,7 @@
 :root {
     --text: black;
     --accent: rgb(143, 95, 240);
+    --brand: rgb(86, 65, 126);
     --bg: #e7eaf6;
 }
 
@@ -22,14 +23,6 @@ button:hover {
     cursor: pointer;
 }
 
-h1 {
-    color: var(--text);
-    margin-left: 20px;
-    margin-top: 20px;
-    font-size: 1.7em;
-    margin-bottom: 0.25em;
-}
-
 label {
     color: var(--text);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -38,6 +31,19 @@ label {
 label,
 button {
     margin-left: 20px;
+}
+
+#logo{
+    color:var(--brand);
+    margin-left: 20px;
+}
+
+#header {
+    color: var(--text);
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size: 1.7em;
+    margin-bottom: 0.25em;
 }
 
 #end-game {
