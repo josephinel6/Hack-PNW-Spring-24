@@ -120,12 +120,7 @@ var functionHandler = function (param) {
 function runCrossWord() {
     document.getElementById("answerBar").classList.add("hidden");
 
-    if (inGame == true) {
-        if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
-            var currentGame = document.getElementById("game");
-            currentGame.remove();
-        }
-    }
+    checkForGame();
     inGame = true;
 
     var board = Array.from({ length: 30 }, () => Array.from({ length: 30 }, () => 'd'));
