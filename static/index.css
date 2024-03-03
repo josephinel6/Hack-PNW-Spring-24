@@ -267,3 +267,14 @@ h1 {
 #info:hover #info-text {
     visibility: visible;
 }
+
+#crossword-image{
+    height: 30vh;
+    width: 30vh;
+    display: inline-block;
+    object-fit: cover;
+    float: right;
+    position: absolute;
+    top: 20vh;
+    right: 20vw;
+}

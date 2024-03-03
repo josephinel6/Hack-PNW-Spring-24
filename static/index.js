@@ -227,16 +227,17 @@ function runCrossWord() {
                     }
                 });
                 
-                gridItem.addEventListener('click', function(event) {
+                gridItem.addEventListener('click', function (event) {
+                    if (document.getElementById("crossword-image") != null) {
+                        document.getElementById("crossword-image").remove();
+                    }
                     var imageURL = board_url[row][col];
                     console.log(imageURL);
                     if (imageURL) {
                         var image = document.createElement("img");
                         image.setAttribute("src", URL.createObjectURL(board_url[row][col]));
-                        image.style.width = "100px";
-                        image.style.height = "100px";
-                        image.style.display = "block";
-                        event.target.parentElement.appendChild(image);
+                        image.id = "crossword-image";
+                        game.appendChild(image);
                     }
                 });
                 
@@ -251,7 +252,8 @@ function runCrossWord() {
     game.appendChild(gridContainer);
     game.appendChild(imageHolder);
     
-    document.body.appendChild(game);    
+    document.body.appendChild(game);
+    createEndGameButton();
 }
 
 
