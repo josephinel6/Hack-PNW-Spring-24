@@ -66,12 +66,9 @@ function runPhotoMatch() {
     nameDisplay.appendChild(showName);
     game.appendChild(nameDisplay);
 
-    //* Creates the "end game" button
-    createEndGameButton();
-
     //* Appends game and end game button
     document.body.appendChild(game);
-    document.body.appendChild(doneHolder);
+    createEndGameButton();
 
     //* Creates a grid to hold the images
     var imageGrid = document.createElement("div");
@@ -358,11 +355,10 @@ function runTypeName() {
     showScore.id = "score";
     showScore.innerHTML = score;
 
-    createEndGameButton();
 
     //* Append necessary things
     document.body.appendChild(game);
-    document.body.appendChild(doneHolder);
+    createEndGameButton();
     game.appendChild(scoreDisplay);
 
     //* Create a holder for the image
@@ -409,6 +405,8 @@ function createEndGameButton() {
     done.onclick = function () {
         endGame();
     }
+    
+    document.body.appendChild(doneHolder);
 }
 
 //* Answer checker for photo matching game
