@@ -197,14 +197,32 @@ function runCrossWord() {
     
     for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
-            var gridItem = document.createElement("input");
-            gridItem.classList.add("grid-item");
-            gridItem.setAttribute("type", "text");
-            gridItem.setAttribute("maxlength", "1");
-            gridItem.value = board[i][j];
-            gridContainer.appendChild(gridItem);
+            (function(row, col) { // IIFE to capture current values of i and j
+                var gridItem = document.createElement("input");
+                gridItem.classList.add("grid-item");
+                gridItem.setAttribute("type", "text");
+                gridItem.setAttribute("maxlength", "0");
+                if (board[row][col] != ' '){
+                    gridItem.style.backgroundColor = "grey";
+                    gridItem.setAttribute("maxlength", "1");
+                }
+                gridItem.addEventListener('input', function(event) {
+                    var input = event.target.value;
+                    if (input === board[row][col]) {
+                        event.target.style.backgroundColor = "green";
+                    } else {
+                        event.target.style.backgroundColor = "grey";
+                    }
+                });
+                gridContainer.appendChild(gridItem);
+            })(i, j); // Pass i and j to the IIFE
         }
     }
+    game.appendChild(gridContainer);
+    document.body.appendChild(game);
+    console.log("gridContainer:", gridContainer);
+    console.log("game:", game);
+
 
     game.appendChild(gridContainer);
     document.body.appendChild(game);
