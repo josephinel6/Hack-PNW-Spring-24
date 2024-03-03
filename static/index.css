@@ -30,7 +30,11 @@ h1 {
     font-size: 1.7em;
     margin-bottom: 0.25em;
 }
-
+h2 {
+    color: purple;
+    font-size: larger;
+    margin-left: 20px;
+}
 #loading {
     margin-top: 5vh;
     display: none;
