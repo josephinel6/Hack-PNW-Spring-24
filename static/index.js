@@ -1,7 +1,6 @@
 var files = [];
 var names = [];
 
-
 function saveFiles() {
     //* If the user hasn't uploaded anything, don't let them start a game
     if (document.getElementById("folderUpload").files.length == 0) {
@@ -273,6 +272,7 @@ function setSquareTypable(row, col) {
 
 function checkForGame() {
     if (inGame == true) {
+        document.body.appendChild(answerBar);
         if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
             var currentGame = document.getElementById("game");
             currentGame.remove();
@@ -293,7 +293,12 @@ function runTypeName() {
     var game = document.createElement("div");
     game.id = "game";
     score = 0;
-
+ 
+    answerBar.addEventListener("keydown", function (e) {
+        if (e.code === "Enter") {  //checks whether the pressed key is "Enter"
+            checkAnswer();
+        }
+    });
 
     //* Set up score display
     var scoreDisplay = document.createElement("p");
@@ -359,6 +364,7 @@ function runTypeName() {
     game.appendChild(answerBar);
 }
 
+
 //* Answer checker for photo matching game
 function check(name) {
     name = name.replace("-", " ");
@@ -409,16 +415,18 @@ function checkAnswer() {
             }
             img.setAttribute("src", URL.createObjectURL(files[randomIndex]));
             img.src = URL.createObjectURL(files[randomIndex]);
-            imageGrid.appendChild(img);
+            imageHolder.appendChild(img);
             imageName = files[randomIndex].name.split('.')[0];
             score++;
             showScore.innerHTML = score;
             result.style.display = "none";
+            answer.value = "";
         })
     } else { //* If not correct, show an x that will disappear after a second
         document.getElementById("result").innerText = "❌";
         sleep(1000).then(() => {
             result.style.display = "none";
+            answer.value = "";
         })
     }
     showScore.innerHTML = score;

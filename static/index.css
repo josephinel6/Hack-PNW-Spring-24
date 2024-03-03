@@ -196,7 +196,8 @@ h1 {
     padding-right: 0.5em;
     margin-right: 0;
     margin-left: 0;
-    padding-top: 0.35em;
+    margin-top: 1vh;
+    padding-top: 0.3em;
     padding-bottom: 0.3em;
     color: white;
     font-size: 0.88em;
@@ -204,7 +205,6 @@ h1 {
 }
 
 #answer {
-    margin-top: 1vh;
     margin-left: 20px;
     height: 3vh;
     padding: 1px;
