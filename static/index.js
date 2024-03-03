@@ -262,7 +262,7 @@ function shuffle(array_original) {
 function place(board, board_url, wordPictureMap, name, x, y, direction) {
     let index = 0;
     let boardCopy = JSON.parse(JSON.stringify(board));
-    let boardUrlCopy = JSON.parse(JSON.stringify(board_url)); // Copy the board_url array
+    let boardUrlCopy = JSON.parse(JSON.stringify(board_url));
 
     let newX = x;
     let newY = y;
@@ -306,7 +306,6 @@ function place(board, board_url, wordPictureMap, name, x, y, direction) {
 
     return {board: boardCopy, board_url: boardUrlCopy};
 }
-
 
 
 function checkForGame() {
