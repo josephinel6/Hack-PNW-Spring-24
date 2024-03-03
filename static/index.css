@@ -12,10 +12,12 @@
 }
 
 body {
+    overflow-x: hidden;
     background-color: var(--bg);
     color: var(--text);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin-left: 20px;
+    margin-right: 20px;
     margin-top: 5vh;
 }
 
@@ -179,6 +181,7 @@ h1 {
     border-style: solid;
     border-color: black;
     margin-left: 35vw;
+    margin-right: 35vw;
     display: none;
 }
 

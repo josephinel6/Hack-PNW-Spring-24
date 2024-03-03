@@ -67,20 +67,7 @@ function runPhotoMatch() {
     game.appendChild(nameDisplay);
 
     //* Creates the "end game" button
-    var doneHolder = document.createElement("div");
-    doneHolder.style.width = "100vw";
-    doneHolder.style.display = "flex";
-    doneHolder.style.justifyContent = "center";
-    var done = document.createElement("button");
-    doneHolder.appendChild(done);
-    doneHolder.id = "done-holder";
-    done.marginLeft = "0";
-    done.innerHTML = "End game";
-    done.id = "end-game";
-    done.className = "button";
-    done.onclick = function () {
-        endGame();
-    }
+    createEndGameButton();
 
     //* Appends game and end game button
     document.body.appendChild(game);
@@ -229,7 +216,7 @@ function runCrossWord() {
     console.log("gridContainer:", gridContainer);
     console.log("game:", game);
 
-    
+    createEndGameButton();
 }
 
 function shuffle(array_original) {
@@ -293,6 +280,7 @@ function setSquareTypable(row, col) {
 function checkForGame() {
     if (inGame == true) {
         document.body.appendChild(answerBar);
+        answerBar.classList.add("hidden");
         if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
             var currentGame = document.getElementById("game");
             currentGame.remove();
@@ -335,18 +323,7 @@ function runTypeName() {
     showScore.id = "score";
     showScore.innerHTML = score;
 
-    //* End game button
-    var doneHolder = document.createElement("div");
-    doneHolder.id = "done-holder";
-    var done = document.createElement("button");
-    doneHolder.appendChild(done);
-    done.innerHTML = "End game";
-    done.marginLeft = "0";
-    done.id = "end-game";
-    done.className = "button";
-    done.onclick = function () {
-        endGame();
-    }
+    createEndGameButton();
 
     //* Append necessary things
     document.body.appendChild(game);
@@ -384,6 +361,20 @@ function runTypeName() {
     game.appendChild(answerBar);
 }
 
+function createEndGameButton() {
+    //* End game button
+    var doneHolder = document.createElement("div");
+    doneHolder.id = "done-holder";
+    var done = document.createElement("button");
+    doneHolder.appendChild(done);
+    done.innerHTML = "End game";
+    done.marginLeft = "0";
+    done.id = "end-game";
+    done.className = "button";
+    done.onclick = function () {
+        endGame();
+    }
+}
 
 //* Answer checker for photo matching game
 function check(name) {
