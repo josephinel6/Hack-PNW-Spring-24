@@ -123,7 +123,71 @@ function runCrossWord() {
     checkForGame();
     inGame = true;
 
-    var board = Array.from({ length: 30 }, () => Array.from({ length: 30 }, () => 'd'));
+    
+    const size = 30;
+    let board = new Array(size).fill().map(() => new Array(size).fill(' '));
+    let names = ['alice', 'bob', 'charlie', 'david', 'emma', 'frank', 'grace', 'henry', 'isabella', 'jack', 'lily', 'michael', 'nora', 'oliver', 'penny'];
+
+
+    shuffle(names);
+
+    let charWordMap = {};
+
+    for (let word of names) {
+        for (let char of word) {
+            if (char in charWordMap) {
+                charWordMap[char].push(word);
+            } else {
+                charWordMap[char] = [word];
+            }
+        }
+    }
+
+    let used = {};
+    for (let name of names) {
+        used[name] = false;
+    }
+
+    
+
+    board = place(board, names[0], 10, 10, 'vertical');
+    used[names[0]] = true;
+
+    let index = 0;
+
+    while (index < 50) {
+        let notPlaced = true;
+        index++;
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
+                if (board[y][x] !== ' ' && notPlaced) {
+                    let char = board[y][x];
+                    for (let word of charWordMap[char]) {
+                        if (!used[word]) {
+                            let result = place(board, word, x, y - word.indexOf(char), 'vertical');
+                            if (result !== false) {
+                                used[word] = true;
+                                board = result;
+                                notPlaced = false;
+                            } else {
+                                result = place(board, word, x - word.indexOf(char), y, 'horizontal');
+                                if (result !== false) {
+                                    used[word] = true;
+                                    board = result;
+                                    notPlaced = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for (let row of board) {
+        console.log(row.join(' '));
+    }
+
 
 
     var game = document.createElement("div");
@@ -132,8 +196,8 @@ function runCrossWord() {
     var gridContainer = document.createElement("div");
     gridContainer.classList.add("grid-container");
     
-    for (var i = 0; i < 16; i++) {
-        for (var j = 0; j < 16; j++) {
+    for (var i = 0; i < 30; i++) {
+        for (var j = 0; j < 30; j++) {
             var gridItem = document.createElement("input");
             gridItem.classList.add("grid-item");
             gridItem.setAttribute("type", "text");
@@ -147,16 +211,58 @@ function runCrossWord() {
     document.body.appendChild(game);
     console.log("gridContainer:", gridContainer);
     console.log("game:", game);
+
+    
 }
 
-
-function randomizeNames() {
-    namesCopy = names;
-    for (let i = names.length - 1; i > 0; i--) {
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [namesCopy[i], namesCopy[j]] = [namesCopy[j], namesCopy[i]];
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    return namesCopy;
+}
+
+function place(board, name, x, y, direction) {
+    let index = 0;
+    let boardCopy = JSON.parse(JSON.stringify(board));
+    let newX = x;
+    let newY = y;
+
+    for (let char of name) {
+        if (index === 0) {
+            if (direction === 'vertical' && (boardCopy[newY - 1][newX] !== ' ' || boardCopy[newY][newX - 1] !== ' ' || boardCopy[newY][newX + 1] !== ' ')) {
+                return false;
+            }
+            if (direction === 'horizontal' && (boardCopy[newY][newX - 1] !== ' ' || boardCopy[newY - 1][newX] !== ' ' || boardCopy[newY + 1][newX] !== ' ')) {
+                return false;
+            }
+            boardCopy[newY][newX] = char;
+        } else if (boardCopy[newY][newX] === char) {
+            // Do nothing
+        } else if (boardCopy[newY][newX] === ' ') {
+            if (direction === 'vertical') {
+                if (boardCopy[newY][newX + 1] === ' ' && boardCopy[newY][newX - 1] === ' ' && boardCopy[newY + 1][newX] === ' ') {
+                    boardCopy[newY][newX] = char;
+                } else {
+                    return false;
+                }
+            }
+            if (direction === 'horizontal') {
+                if (boardCopy[newY][newX + 1] === ' ' && boardCopy[newY - 1][newX] === ' ' && boardCopy[newY + 1][newX] === ' ') {
+                    boardCopy[newY][newX] = char;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        newX += direction === 'horizontal' ? 1 : 0;
+        newY += direction === 'vertical' ? 1 : 0;
+        index++;
+    }
+
+    return boardCopy;
 }
 
 function setSquareTypable(row, col) {
