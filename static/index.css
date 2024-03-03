@@ -26,18 +26,8 @@ h1 {
     color: var(--text);
     margin-left: 20px;
     margin-top: 20px;
-    /* font-size: large; */
     font-size: 1.7em;
     margin-bottom: 0.25em;
-}
-
-#loading {
-    margin-top: 5vh;
-    display: none;
-    align-self: center;
-    height: 4vw;
-    width: 4vw;
-    margin-left: 48vw;
 }
 
 label {
@@ -45,8 +35,14 @@ label {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+label,
+button {
+    margin-left: 20px;
+}
+
 #end-game {
     margin-top: 2vh;
+    margin-left: 0;
 }
 
 .image {
@@ -83,20 +79,25 @@ label {
     padding-bottom: 2vh;
 }
 
-label,
-button {
-    margin-left: 20px;
-}
-
 #scoreDisplay {
     width: 100vw;
     min-height: 0;
     padding: 0;
     margin: 0;
-    /* height: 20px; */
     margin-left: 20px;
     height: 5vh;
     font-size: 1.1em;
+}
+
+#done-holder{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+#scoreText{
+    display: inline-block;
+    margin-right: 5px;
 }
 
 #nameDisplay {
@@ -125,7 +126,6 @@ button {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     color: white;
-    /* font-weight: bold; */
     font-size: 1em;
     border: none;
 }
@@ -143,7 +143,6 @@ button {
     padding-top: 0.4em;
     padding-bottom: 0.4em;
     color: white;
-    /* font-weight: bold; */
     font-size: 0.95em;
     border: none;
 }
@@ -190,7 +189,6 @@ button {
     padding-top: 0.35em;
     padding-bottom: 0.3em;
     color: white;
-    /* font-weight: bold; */
     font-size: 0.88em;
     border: none;
 }
@@ -222,14 +220,9 @@ button {
 
 .grid-item {
     background-color: #FFFFFF;
-    /* Default background color for grid cells */
     border: 1px solid #999;
-    /* Border color */
     text-align: center;
     line-height: 30px;
-    /* Adjust line height to vertically center text */
     width: 30px;
-    /* Fixed width for each grid cell */
     height: 30px;
-    /* Fixed height for each grid cell */
 }

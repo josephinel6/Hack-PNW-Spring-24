@@ -3,44 +3,41 @@ var names = [];
 
 
 function saveFiles() {
+    //* If the user hasn't uploaded anything, don't let them start a game
     if (document.getElementById("folderUpload").files.length == 0) {
         alert("Please upload at least one file.");
-    } else {
+    } else { //* If there is at least one file uploaded, save the files and move to the next page
         document.getElementById("welcome").style.display = "none";
+        //* sleep for display purposes
         sleep(500).then(() => {
-            files = document.getElementById("folderUpload").files;
-            getNames();
-            document.getElementById("options").style.display = "block";
+            files = document.getElementById("folderUpload").files;      //* files = the user's files
+            getNames();                                                 //* add names from all the photos
+            document.getElementById("options").style.display = "block"; //* next page
         })
     }
 }
 
+//* helper function to sleep
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 var inGame = false;
-var found = false;
-var currentPerson;
-var score = 0;
-var prevRand = null;
+var currentPerson;   //* tracks the current person being searched for
+var score = 0;       //* score starts at 0, and this resets every game
+var prevRand = null; //* avoid repetition in random generator
 
 var scoreDisplay, scoreText, showScore, nameDisplay, nameText, showName;
 
 function runPhotoMatch() {
-    if (inGame == true) {
-        if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
-            var currentGame = document.getElementById("game");
-            currentGame.remove();
-            document.getElementById("done-holder").remove();
-            score = 0;
-        }
-    }
-    inGame = true;
+    checkForGame();
 
+    //* Create a new game
+    inGame = true;
     var game = document.createElement("div");
     game.id = "game";
 
+    //* Creates a score display
     scoreDisplay = document.createElement("div");
     scoreDisplay.style.padding = 0;
     scoreDisplay.id = "scoreDisplay";
@@ -56,6 +53,7 @@ function runPhotoMatch() {
     showScore.id = "score";
     showScore.innerHTML = score;
 
+    //* Creates a name display
     nameDisplay = document.createElement("div");
     nameDisplay.style.padding = 0;
     nameDisplay.id = "nameDisplay";
@@ -69,6 +67,7 @@ function runPhotoMatch() {
     nameDisplay.appendChild(showName);
     game.appendChild(nameDisplay);
 
+    //* Creates the "end game" button
     var doneHolder = document.createElement("div");
     doneHolder.style.width = "100vw";
     doneHolder.style.display = "flex";
@@ -76,7 +75,6 @@ function runPhotoMatch() {
     var done = document.createElement("button");
     doneHolder.appendChild(done);
     doneHolder.id = "done-holder";
-
     done.marginLeft = "0";
     done.innerHTML = "End game";
     done.id = "end-game";
@@ -85,13 +83,16 @@ function runPhotoMatch() {
         endGame();
     }
 
+    //* Appends game and end game button
     document.body.appendChild(game);
     document.body.appendChild(doneHolder);
 
+    //* Creates a grid to hold the images
     var imageGrid = document.createElement("div");
     imageGrid.id = "image-grid";
     game.appendChild(imageGrid);
 
+    //* Adds each image uploaded into the grid
     for (var i = 0; i < files.length; i++) {
         console.log(files[i]);
         var img = document.createElement("img");
@@ -100,20 +101,22 @@ function runPhotoMatch() {
         img.setAttribute("src", URL.createObjectURL(files[i]))
         img.src = URL.createObjectURL(files[i]);
         var thisName = names[i];
-        img.id = names[i].replace(" ", "-")
+        img.id = names[i].replace(" ", "-") //* Make the image ID the name of the person
         img.onclick = functionHandler(names[i])
     }
 
+    //* Generates a random index to get a random name to find
     var num = Math.floor(Math.random() * (files.length));
     showName.innerHTML = names[num];
-    currentPerson = names[num];
-    prevRand = num;
+    currentPerson = names[num]; //* Stores the current person being looked for
+    prevRand = num; //* Stores this random to avoid getting the same numbers in a row
 }
 
-
+//* Simple handler for check function
 var functionHandler = function (param) {
     return function () { check(param) };
 }
+
 class WordOnGrid {
     constructor(word) {
         this.word = word; // The word itself
@@ -165,7 +168,6 @@ function runCrossWord() {
 
     // Generate grid cells
 
-
     //setSquareTypable(1, 1);
     namesCopy = randomizeNames();
     namesCopy = namesCopy.map(function (element) {
@@ -188,9 +190,6 @@ function runCrossWord() {
         wordsOnGrid.push(word);
     });
 
-
-
-
     for (var i = 0; i < 16; i++) { // Adjust the number of rows as needed
         for (var j = 0; j < 16; j++) { // Adjust the number of columns as needed
             var gridItem = document.createElement("input");
@@ -205,8 +204,6 @@ function runCrossWord() {
 
         }
     }
-
-
 
     // Append the grid container to the game
     game.appendChild(gridContainer);
@@ -223,9 +220,6 @@ function runCrossWord() {
     }
 
     */
-
-
-
 }
 
 
@@ -244,35 +238,51 @@ function setSquareTypable(row, col) {
     square.setAttribute("maxlength", "1");
 }
 
-function runTypeName() {
+function checkForGame() {
     if (inGame == true) {
         if (window.confirm("There is already a game open. Would you like to exit this and start a new one?")) {
             var currentGame = document.getElementById("game");
             currentGame.remove();
             document.getElementById("done-holder").remove();
-            score = 0;
+             score = 0;
         }
     }
+}
+
+//* Runs the typing game
+function runTypeName() {
+    checkForGame();
+
+    //* Unhide elements and set up game
     inGame = true;
-
-    document.getElementById("answerBar").classList.remove("hidden");
-
+    var answerBar = document.getElementById("answerBar");
+    answerBar.classList.remove("hidden");
     var game = document.createElement("div");
+    game.appendChild(answerBar);
     game.id = "game";
     score = 0;
 
+
+    //* Set up score display
     var scoreDisplay = document.createElement("p");
-    var name = document.createElement("p");
+    scoreDisplay = document.createElement("div");
+    scoreDisplay.id = "scoreDisplay";
+    scoreText = document.createElement("p");
+    scoreText.innerHTML = "Score: ";
+    scoreText.id = "scoreText"
+    game.appendChild(scoreDisplay);
+    scoreDisplay.appendChild(scoreText);
+    showScore = document.createElement("p");
+    showScore.style.display = "inline-block";
+    scoreDisplay.appendChild(showScore);
+    showScore.id = "score";
+    showScore.innerHTML = score;
 
-    document.body.appendChild(game);
-
+    //* End game button
     var doneHolder = document.createElement("div");
-    doneHolder.style.width = "100vw";
-    doneHolder.style.display = "flex";
-    doneHolder.style.justifyContent = "center";
+    doneHolder.id = "done-holder";
     var done = document.createElement("button");
     doneHolder.appendChild(done);
-    doneHolder.id = "done-holder";
     done.innerHTML = "End game";
     done.marginLeft = "0";
     done.id = "end-game";
@@ -281,33 +291,16 @@ function runTypeName() {
         endGame();
     }
 
+    //* Append necessary things
     document.body.appendChild(game);
     document.body.appendChild(doneHolder);
-
-    scoreDisplay = document.createElement("div");
-    scoreDisplay.style.padding = 0;
-    scoreDisplay.id = "scoreDisplay";
-    scoreText = document.createElement("p");
-    scoreText.innerHTML = "Score: ";
-    scoreText.style.display = "inline-block";
     game.appendChild(scoreDisplay);
-    scoreText.style.marginRight = "5px";
-    scoreDisplay.appendChild(scoreText);
-    showScore = document.createElement("p");
-    showScore.style.display = "inline-block";
-    scoreDisplay.appendChild(showScore);
-    showScore.id = "score";
-    showScore.innerHTML = score;
 
-    game.appendChild(scoreDisplay);
-    game.appendChild(name);
+    //* Create a holder for the image
+    imageHolder = document.createElement("div");
+    imageHolder.id = "image-holder";
+    game.appendChild(imageHolder);
 
-    imageGrid = document.createElement("div");
-    imageGrid.id = "image-holder";
-
-    game.appendChild(imageGrid);
-
-    game.appendChild(document.getElementById("answerBar"));
 
     // Randomly select an index within the range of files array
     randomIndex = Math.floor(Math.random() * files.length);
@@ -332,39 +325,50 @@ function runTypeName() {
     //name.innerHTML = imageName;
 }
 
+//* Answer checker for photo matching game
 function check(name) {
-    console.log(name);
     name = name.replace("-", " ");
-    if (name.toLowerCase() == currentPerson.toLowerCase()) {
+    if (name.toLowerCase() == currentPerson.toLowerCase()) { //* If the answer is right
+        //* Generate a new random index that is NOT the previous index
         var num = Math.floor(Math.random() * (files.length));
         while (prevRand == num) {
             num = Math.floor(Math.random() * (files.length));
         }
         prevRand = num;
+
+        //* Set the new name
         showName.innerHTML = names[num];
         currentPerson = names[num];
+
+        //* Increase and set score
         score++;
-        console.log(score);
         showScore.innerHTML = score;
+
+        //* Reset all brightnesses (see below)
         for (var i = 0; i < files.length; i++) {
             document.getElementById(names[i].replace(" ",)).style.filter = "brightness(100%)";
         }
-
     } else {
+        //* If the answer is wrong, grey out that image
         document.getElementById(name).style.filter = "brightness(50%)";
     }
 }
 
+//* Answer checking function for typing game
 function checkAnswer() {
     var userAnswer = document.getElementById("answer").value;
     var correctAnswer = imageName.toLowerCase(); // Convert both answers to lowercase
     var result = document.getElementById("result");
     result.style.display = "inline-block";
 
+    //* If the answer is correct
     if (userAnswer.toLowerCase() == correctAnswer) { // Compare case-insensitively
+        //* Display a check
         result.innerText = "✓";
         result.style.color = "green";
-        sleep(500).then(() => {
+
+        sleep(500).then(() => { //* Short pause for display purposes
+            //* Generate a new random index and use that to load another photo
             prev = randomIndex;
             while (randomIndex == prev && files.length > 1) {
                 randomIndex = Math.floor(Math.random() * files.length);
@@ -377,7 +381,7 @@ function checkAnswer() {
             showScore.innerHTML = score;
             result.style.display = "none";
         })
-    } else {
+    } else { //* If not correct, show an x that will disappear after a second
         document.getElementById("result").innerText = "❌";
         sleep(1000).then(() => {
             result.style.display = "none";
@@ -386,44 +390,40 @@ function checkAnswer() {
     showScore.innerHTML = score;
 }
 
+//* Set name array to the names of all the files
 function getNames() {
     for (var i = 0; i < files.length; i++) {
         names[i] = files[i].name.split('.')[0];
     }
 }
 
+//* Restart the game
 function backToHome() {
     location.reload();
 }
 
+//* For the end game button
 function endGame() {
-    game.remove();
-    inGame = false;
-
-    // var stats = document.createElement("div");
-    // stats.id = "stats";
-    // document.body.appendChild(stats);
+    //* Hide game and other page elements
+    game.remove();  //* remove the game
+    inGame = false; //* set in game boolean to false
     document.getElementById("options").style.display = "none";
-    document.getElementById("stats").style.display = "block";
-
     document.getElementById("done-holder").remove();
 
+    //* Create stats box
+    document.getElementById("stats").style.display = "block";
     document.getElementById("final-score").innerHTML = score;
 
-
+    //* Create play again button
     var holder = document.createElement("div");
-    holder.style.width = "100vw";
-    holder.style.display = "flex";
-    holder.style.justifyContent = "center";
+    holder.id = "done-holder"; //* We can use the same styling from the end game button holder
     var playAgain = document.createElement("button");
     document.body.appendChild(holder);
-    playAgain.id = "end-game";
+    playAgain.id = "end-game"; //* We can use the same styling as the one from the end game button
     playAgain.className = "button";
-    playAgain.style.marginLeft = "0";
     playAgain.innerHTML = "Memorize another set of names"
     playAgain.onclick = function () {
         location.reload();
     }
-
     holder.appendChild(playAgain);
 }
