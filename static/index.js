@@ -99,7 +99,6 @@ function runPhotoMatch() {
 var functionHandler = function (param) {
     return function () { check(param) };
 }
-
 function runCrossWord() {
     document.getElementById("answerBar").classList.add("hidden");
 
@@ -152,6 +151,7 @@ function runCrossWord() {
     
 
     let result = place(board, board_url, wordPictureMap, new_names[0], 6, 6, 'vertical');
+    console.log(new_names[0])
     board = result.board;
     board_url = result.board_url;
     used[new_names[0]] = true;
@@ -202,9 +202,14 @@ function runCrossWord() {
     var game = document.createElement("div");
     game.id = "game";
 
+    
+
     var gridContainer = document.createElement("div");
     gridContainer.classList.add("grid-container");
-    
+
+    imageHolder = document.createElement("div");
+    imageHolder.id = "image-holder";
+
     for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
             (function(row, col) { // IIFE to capture current values of i and j
@@ -230,7 +235,7 @@ function runCrossWord() {
                     console.log(imageURL);
                     if (imageURL) {
                         var image = document.createElement("img");
-                        image.setAttribute("src", files[0]);
+                        image.setAttribute("src", URL.createObjectURL(board_url[row][col]));
                         image.style.width = "100px";
                         image.style.height = "100px";
                         image.style.display = "block";
@@ -239,15 +244,15 @@ function runCrossWord() {
                 });
                 
                 gridContainer.appendChild(gridItem);
+                
             })(i, j); // Pass i and j to the IIFE
         }
     }
+    
     game.appendChild(gridContainer);
-    document.body.appendChild(game);
-    console.log("gridContainer:", gridContainer);
-    console.log("game:", game);
-
-    createEndGameButton();
+    game.appendChild(imageHolder);
+    
+    document.body.appendChild(game);    
 }
 
 function shuffle(array_original) {
