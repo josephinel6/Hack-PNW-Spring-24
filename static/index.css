@@ -38,7 +38,7 @@ button {
     margin-left: 20px;
 }
 
-#header {
+h1 {
     color: var(--text);
     margin-left: 20px;
     margin-top: 20px;
