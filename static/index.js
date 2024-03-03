@@ -190,7 +190,6 @@ function runTypeName() {
     var answerBar = document.getElementById("answerBar");
     answerBar.classList.remove("hidden");
     var game = document.createElement("div");
-    game.appendChild(answerBar);
     game.id = "game";
     score = 0;
 
@@ -249,12 +248,14 @@ function runTypeName() {
     img.style.float = "left";
 
     // Append the image to the image grid
-    imageGrid.appendChild(img);
+    imageHolder.appendChild(img);
 
     // Set the name to display (name of the selected image without extension)
     imageName = files[randomIndex].name.split('.')[0];
     prevRand = randomIndex;
     //name.innerHTML = imageName;
+    
+    game.appendChild(answerBar);
 }
 
 //* Answer checker for photo matching game
