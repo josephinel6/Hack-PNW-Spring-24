@@ -112,8 +112,26 @@ function runCrossWord() {
     
     const size = 20;
     let board = new Array(size).fill().map(() => new Array(size).fill(' '));
+    let board_url = new Array(size).fill().map(() => new Array(size).fill(''));
+    
+    let wordPictureMap = {};
+    names.forEach((name, index) => {
+        let lowercaseName = name.toLowerCase();
+        if (index < files.length) { // Add error handling for mismatched lengths
+            wordPictureMap[lowercaseName] = files[index];
+        } else {
+            console.error("Error: Mismatched lengths of names and files arrays.");
+        }
+    });
 
+    for (let key in wordPictureMap) {
+        console.log(key + ": " + wordPictureMap[key]);
+    }
+    
     new_names = shuffle(names);
+
+
+
     new_names = new_names.map(name => name.toLowerCase());
 
 
@@ -136,7 +154,9 @@ function runCrossWord() {
 
     
 
-    board = place(board, new_names[0], 6, 6, 'vertical');
+    let result = place(board, board_url, wordPictureMap, new_names[0], 6, 6, 'vertical');
+    board = result.board;
+    board_url = result.board_url;
     used[new_names[0]] = true;
 
     let index = 0;
@@ -150,16 +170,18 @@ function runCrossWord() {
                     let char = board[y][x];
                     for (let word of charWordMap[char]) {
                         if (!used[word]) {
-                            let result = place(board, word, x, y - word.indexOf(char), 'vertical');
+                            let result = place(board, board_url, wordPictureMap, word, x, y - word.indexOf(char), 'vertical');
                             if (result !== false) {
                                 used[word] = true;
-                                board = result;
+                                board = result.board;
+                                board_url = result.board_url;
                                 notPlaced = false;
                             } else {
-                                result = place(board, word, x - word.indexOf(char), y, 'horizontal');
+                                result = place(board, board_url, wordPictureMap, word, x - word.indexOf(char), y, 'horizontal');
                                 if (result !== false) {
                                     used[word] = true;
-                                    board = result;
+                                    board = result.board;
+                                    board_url = result.board_url;
                                     notPlaced = false;
                                 }
                             }
@@ -171,6 +193,10 @@ function runCrossWord() {
     }
 
     for (let row of board) {
+        console.log(row.join(' '));
+    }
+
+    for (let row of board_url) {
         console.log(row.join(' '));
     }
 
@@ -201,16 +227,24 @@ function runCrossWord() {
                         event.target.style.backgroundColor = "grey";
                     }
                 });
+                
+                gridItem.addEventListener('click', function(event) {
+                    var imageURL = board_url[row][col];
+                    console.log(imageURL);
+                    if (imageURL) {
+                        var image = document.createElement("img");
+                        image.setAttribute("src", files[0]);
+                        image.style.width = "100px";
+                        image.style.height = "100px";
+                        image.style.display = "block";
+                        event.target.parentElement.appendChild(image);
+                    }
+                });
+                
                 gridContainer.appendChild(gridItem);
             })(i, j); // Pass i and j to the IIFE
         }
     }
-    game.appendChild(gridContainer);
-    document.body.appendChild(game);
-    console.log("gridContainer:", gridContainer);
-    console.log("game:", game);
-
-
     game.appendChild(gridContainer);
     document.body.appendChild(game);
     console.log("gridContainer:", gridContainer);
@@ -228,9 +262,11 @@ function shuffle(array_original) {
     return array;
 }
 
-function place(board, name, x, y, direction) {
+function place(board, board_url, wordPictureMap, name, x, y, direction) {
     let index = 0;
     let boardCopy = JSON.parse(JSON.stringify(board));
+    let boardUrlCopy = JSON.parse(JSON.stringify(board_url)); // Copy the board_url array
+
     let newX = x;
     let newY = y;
 
@@ -243,12 +279,14 @@ function place(board, name, x, y, direction) {
                 return false;
             }
             boardCopy[newY][newX] = char;
+            boardUrlCopy[newY][newX] = wordPictureMap[name];
         } else if (boardCopy[newY][newX] === char) {
             // Do nothing
         } else if (boardCopy[newY][newX] === ' ') {
             if (direction === 'vertical') {
                 if (boardCopy[newY][newX + 1] === ' ' && boardCopy[newY][newX - 1] === ' ' && boardCopy[newY + 1][newX] === ' ') {
                     boardCopy[newY][newX] = char;
+                    boardUrlCopy[newY][newX] = wordPictureMap[name];
                 } else {
                     return false;
                 }
@@ -256,6 +294,7 @@ function place(board, name, x, y, direction) {
             if (direction === 'horizontal') {
                 if (boardCopy[newY][newX + 1] === ' ' && boardCopy[newY - 1][newX] === ' ' && boardCopy[newY + 1][newX] === ' ') {
                     boardCopy[newY][newX] = char;
+                    boardUrlCopy[newY][newX] = wordPictureMap[name];
                 } else {
                     return false;
                 }
@@ -268,14 +307,10 @@ function place(board, name, x, y, direction) {
         index++;
     }
 
-    return boardCopy;
+    return {board: boardCopy, board_url: boardUrlCopy};
 }
 
-function setSquareTypable(row, col) {
-    var square = document.querySelector('.grid-item[data-row="' + row + '"][data-col="' + col + '"]');
-    square.style.backgroundColor = "grey";
-    square.setAttribute("maxlength", "1");
-}
+
 
 function checkForGame() {
     if (inGame == true) {
